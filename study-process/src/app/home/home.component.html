@@ -1,1 +1,26 @@
-<p>home works!</p>
+<h5>memo-cards</h5>
+
+<h1 class="">My Decks</h1>
+
+<mat-divider></mat-divider>
+<div class="add-memoCard--wrap">
+        <div class="example-button-row">
+          <div class="example-flex-container">
+            <div class="example-button-container">
+              <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="openDialog()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+</div>
+
+<div>
+    <mat-card *ngFor="let card of memoCards" matRipple>
+        <div>
+            <mat-card-title>{{card.title}}</mat-card-title>
+            <mat-card-subtitle>mat-card-subtitle</mat-card-subtitle>
+        </div>
+    </mat-card>
+
+</div>

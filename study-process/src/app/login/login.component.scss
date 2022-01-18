@@ -1,27 +1,37 @@
+@import "../../scss/colors.scss";
+
 :host {
-    display: flex;
-    justify-content: center;
-    margin: 100px 0px;
-  }
+  display: flex;
+  justify-content: center;
+  margin: 100px 0px;
+}
 
-  .mat-form-field {
-    width: 100%;
-    min-width: 300px;
-  }
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
 
-  mat-card-title,
-  mat-card-content {
-    display: flex;
-    justify-content: center;
-  }
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+}
 
-  .error {
-    padding: 16px;
-    color: white;
-    background-color: red;
-  }
+.error {
+  padding: 16px;
+  color: white;
+  background-color: red;
+}
 
-  .button {
-    display: flex;
-    justify-content: flex-end;
-  }
+.message {
+  padding: 0px;
+  height: 2em;
+  text-align: center;
+  color: $color-primary;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}
