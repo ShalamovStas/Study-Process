@@ -53,5 +53,3 @@ Thumbs.db
 
 # Built Visual Studio Code Extensions
 *.vsix
-/study-process/.vscode
-/.vs
