@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "study-process": {
+      "hosting": {
+        "study-process": [
+          "study-process"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "study-process"
+  }
+}
