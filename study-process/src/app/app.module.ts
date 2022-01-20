@@ -37,6 +37,7 @@ import {
 import { FirebaseDataProviderService } from './services/firebaseDataProvider.service';
 import { Firestore } from "@angular/fire/firestore";
 import { CreateMemoCardDialogComponent } from './create-memo-card-dialog/create-memo-card-dialog.component';
+import { DeleteMemoCardDialogComponent } from './home/dialogs/create-memo-card-dialog/delete-memo-card-dialog.component';
 
 
 
@@ -55,7 +56,10 @@ const firebaseConfig = {
     AppComponent,
     LoginComponent,
     HomeComponent,
-    CreateMemoCardDialogComponent
+
+    //home
+    CreateMemoCardDialogComponent,
+    DeleteMemoCardDialogComponent
   ],
   imports: [
     MaterialExampleModule,

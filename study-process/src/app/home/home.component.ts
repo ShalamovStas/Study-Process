@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreateMemoCardDialogComponent } from '../create-memo-card-dialog/create-memo-card-dialog.component';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
+import { DeleteMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/delete-memo-card-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -67,6 +68,36 @@ export class HomeComponent implements OnInit {
       console.log(response);
       this.memoCards = response;
     })
+  }
+
+  onEvent(event: any) {
+    event.stopPropagation();
+  }
+
+
+  openDeleteConfirmDialog(id: string): void {
+    const dialogRef = this.dialog.open(DeleteMemoCardDialogComponent, {
+      maxWidth: '60vw',
+      data: { id: id },
+    });
+
+    dialogRef.afterClosed().subscribe(model => {
+      if (!model || !model.id)
+        return;
+
+      this.deleteItem(model.id);
+    });
+  }
+
+  deleteItem(id: string) {
+    if (!id)
+      return;
+    console.log("Delete")
+    console.log(id);
+
+    this.db.deleteMemoCardById(id).then(() => {
+      this.getData()
+    });
   }
 
 }

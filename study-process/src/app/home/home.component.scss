@@ -1,6 +1,13 @@
 .mat-card {
     cursor: pointer;
     margin-bottom: 10px;
+    position: relative;
+}
+
+.mat-menu--wrap{
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .add-memoCard--wrap{
@@ -9,3 +16,4 @@
     right: 20px;
     z-index: 100;
 }
+
