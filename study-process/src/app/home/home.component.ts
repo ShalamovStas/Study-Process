@@ -30,10 +30,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.db.getMemoCardsByUserName(this.user.id).then(response => {
-      console.log(response);
-      this.memoCards = response;
-    })
+    this.getData();
   }
 
   openDialog(): void {
@@ -96,6 +93,7 @@ export class HomeComponent implements OnInit {
     this.db.getMemoCardsByUserName(this.user.id).then(response => {
       console.log(response);
       this.memoCards = response;
+      localStorage.setItem("memoCards", JSON.stringify(response));
     })
   }
 
