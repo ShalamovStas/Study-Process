@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc } from "@angular/fire/firestore";
+import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc, updateDoc } from "@angular/fire/firestore";
 
 @Injectable()
 export class FirebaseDataProviderService {
@@ -48,6 +48,15 @@ export class FirebaseDataProviderService {
 
     createNewDeck(deckModel: { title: string; items: never[]; userId: any; }) {
         setDoc(doc(this.firestore, "memoCards", this.generateGuid()), deckModel);
+    }
+
+    async updateMemoCardTitleById(cardId: string, title: string): Promise<void> {
+        if (!cardId || !title)
+            return;
+
+        return updateDoc(doc(this.firestore, "memoCards", cardId), {
+            title: title
+        });
     }
 
     private mapUserModel(id: string, response: any): any {

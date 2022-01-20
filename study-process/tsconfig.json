@@ -22,7 +22,10 @@
       "es2020",
       "dom"
     ],
-    "skipLibCheck": true 
+    "skipLibCheck": true,
+    "paths": {
+      "@app/*": [ "./app/*" ],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -2,18 +2,21 @@
     cursor: pointer;
     margin-bottom: 10px;
     position: relative;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
 }
 
-.mat-menu--wrap{
+.mat-menu--wrap {
     position: absolute;
     top: 10px;
     right: 10px;
 }
 
-.add-memoCard--wrap{
+.add-memoCard--wrap {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 100;
 }
-

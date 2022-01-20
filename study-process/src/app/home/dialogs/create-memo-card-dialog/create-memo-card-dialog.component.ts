@@ -10,7 +10,7 @@ export class CreateMemoCardDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CreateMemoCardDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public cardModel: any,
   ) {}
 
   onNoClick(): void {

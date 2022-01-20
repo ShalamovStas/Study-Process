@@ -36,10 +36,9 @@ import {
 
 import { FirebaseDataProviderService } from './services/firebaseDataProvider.service';
 import { Firestore } from "@angular/fire/firestore";
-import { CreateMemoCardDialogComponent } from './create-memo-card-dialog/create-memo-card-dialog.component';
-import { DeleteMemoCardDialogComponent } from './home/dialogs/create-memo-card-dialog/delete-memo-card-dialog.component';
-
-
+import { CreateMemoCardDialogComponent } from './home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
+import { DeleteMemoCardDialogComponent } from './home/dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
+import { MemoCardComponent } from './memo-card/memo-card.component';
 
 
 const firebaseConfig = {
@@ -59,7 +58,8 @@ const firebaseConfig = {
 
     //home
     CreateMemoCardDialogComponent,
-    DeleteMemoCardDialogComponent
+    DeleteMemoCardDialogComponent,
+    MemoCardComponent
   ],
   imports: [
     MaterialExampleModule,

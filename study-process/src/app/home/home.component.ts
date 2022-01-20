@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CreateMemoCardDialogComponent } from '../create-memo-card-dialog/create-memo-card-dialog.component';
+import { CreateMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
-import { DeleteMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/delete-memo-card-dialog.component';
+import { DeleteMemoCardDialogComponent } from './dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
+import { Card } from '../models/Card';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +13,11 @@ import { DeleteMemoCardDialogComponent } from './dialogs/create-memo-card-dialog
 })
 export class HomeComponent implements OnInit {
   user: any;
-  memoCards: Array<any> = [];
+  memoCards: Array<Card> = [];
 
-
-  constructor(private router: Router, private db: FirebaseDataProviderService, public dialog: MatDialog) { }
+  constructor(private router: Router, private db: FirebaseDataProviderService, 
+    public dialog: MatDialog,
+    private _router: Router) { }
 
   ngOnInit(): void {
     let stringUser = localStorage.getItem('user');
@@ -48,6 +50,33 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  openEditDialog(card: any) {
+    if (!card)
+      return;
+
+    let currentCardModel = JSON.parse(JSON.stringify(card));
+    console.log(currentCardModel)
+
+    const dialogRef = this.dialog.open(CreateMemoCardDialogComponent, {
+      maxWidth: '60vw',
+      data: currentCardModel,
+    });
+
+    dialogRef.afterClosed().subscribe(newCard => {
+      if (!newCard)
+        return;
+
+      this.db.updateMemoCardTitleById(newCard.id, newCard.title).then(() => {
+        for (let index = 0; index < this.memoCards.length; index++) {
+          if (this.memoCards[index].id == newCard.id) {
+            this.memoCards[index] = newCard;
+            return;
+          }
+        }
+      });
+    });
+  }
+
   createNewDeck(title: string) {
     const deckModel = {
       title: title,
@@ -74,7 +103,6 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
   }
 
-
   openDeleteConfirmDialog(id: string): void {
     const dialogRef = this.dialog.open(DeleteMemoCardDialogComponent, {
       maxWidth: '60vw',
@@ -98,6 +126,11 @@ export class HomeComponent implements OnInit {
     this.db.deleteMemoCardById(id).then(() => {
       this.getData()
     });
+  }
+
+  openDeck(card: Card){
+    console.log("open deck");
+    this._router.navigate(['/memoCard', card.id]);
   }
 
 }
