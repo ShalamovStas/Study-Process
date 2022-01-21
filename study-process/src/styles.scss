@@ -14,3 +14,10 @@ body {
 mat-divider {
   margin: 10px 0px 10px 0px !important;
 }
+
+.flow-btn-bottom-right--wrap{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}

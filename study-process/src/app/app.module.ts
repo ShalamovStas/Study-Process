@@ -39,6 +39,7 @@ import { Firestore } from "@angular/fire/firestore";
 import { CreateMemoCardDialogComponent } from './home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { DeleteMemoCardDialogComponent } from './home/dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
 import { MemoCardComponent } from './memo-card/memo-card.component';
+import { ToolbarComponent } from './layout/toolbar/toolbar.component';
 
 
 const firebaseConfig = {
@@ -59,7 +60,8 @@ const firebaseConfig = {
     //home
     CreateMemoCardDialogComponent,
     DeleteMemoCardDialogComponent,
-    MemoCardComponent
+    MemoCardComponent,
+    ToolbarComponent
   ],
   imports: [
     MaterialExampleModule,

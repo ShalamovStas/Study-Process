@@ -11,13 +11,20 @@ import { Card } from '../models/Card';
 export class MemoCardComponent implements OnInit {
   subscription: Subscription | undefined;
   card: Card | undefined;
+  breakpoint: number | undefined;
 
-  constructor(private activateRoute: ActivatedRoute, private router: Router) { }
+  breakPointWindowWidth = 800;
+  toggled = true;
+
+
+  constructor(private activateRoute: ActivatedRoute, private router: Router) {
+    this.breakpoint = (window.innerWidth <= this.breakPointWindowWidth) ? 1 : 2;
+  }
 
   ngOnInit(): void {
     this.subscription = this.activateRoute.params.subscribe(params => {
       let cardId = params["id"];
-      
+
       if (!cardId) {
         this.routeToHome();
         return;
@@ -39,10 +46,24 @@ export class MemoCardComponent implements OnInit {
       if (!this.card)
         this.routeToHome();
     });
+
+
   }
 
   routeToHome() {
     this.router.navigate(['/home', '']);
+  }
+
+  onResize(event: any) {
+    this.breakpoint = (event.target.innerWidth <= this.breakPointWindowWidth) ? 1 : 2;
+  }
+
+  toggleWord(){
+    this.toggled = !this.toggled;
+  }
+
+  openDialog(){
+    
   }
 
 }

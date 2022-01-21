@@ -1,1 +1,58 @@
-<p>memo-card works!</p>
+<app-toolbar></app-toolbar>
+<mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
+    <mat-grid-tile>
+        <div class="content--wrap item-btn words-list-btn">
+            <mat-icon>view_list</mat-icon>
+            Words list
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div class="content--wrap item-btn training-cards-btn">
+            <mat-icon>playlist_play</mat-icon>
+            Training cards
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<mat-divider></mat-divider>
+
+
+<div class="words-list--review-wrap">
+    <mat-card>
+        <div class="options">
+            <mat-icon *ngIf="toggled" (click)="toggleWord()">bookmark</mat-icon>
+            <mat-icon *ngIf="!toggled" (click)="toggleWord()">bookmark_outline</mat-icon>
+        </div>
+        <div>
+
+            <mat-card-title>Title</mat-card-title>
+            <mat-card-subtitle>mat-card-subtitle</mat-card-subtitle>
+        </div>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-title>Title</mat-card-title>
+        <mat-card-subtitle>mat-card-subtitle</mat-card-subtitle>
+    </mat-card>
+
+    <mat-card>
+        <div>
+            <mat-card-title>Title</mat-card-title>
+            <mat-card-subtitle>mat-card-subtitle</mat-card-subtitle>
+        </div>
+    </mat-card>
+
+    <mat-card>
+        <div>
+            <mat-card-title>Title</mat-card-title>
+            <mat-card-subtitle>mat-card-subtitle</mat-card-subtitle>
+        </div>
+    </mat-card>
+</div>
+
+<div class="flow-btn-bottom-right--wrap">
+                <button mat-fab color="primary" aria-label="Example icon button with a delete icon"
+                    (click)="openDialog()">
+                    <mat-icon>add</mat-icon>
+                </button>
+</div>

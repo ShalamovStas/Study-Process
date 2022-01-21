@@ -1,0 +1,67 @@
+.content--wrap {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    color: white;
+
+    &.item-btn {
+        font-size: 1.2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 2px;
+        cursor: pointer;
+        border-radius: 10px;
+
+        mat-icon {
+            font-size: 5em;
+            width: fit-content;
+            height: fit-content;
+        }
+    }
+
+    &.words-list-btn {
+        background-color: #16a086;
+        &:hover {
+            background-color: #208b78;
+        }
+    }
+
+    &.training-cards-btn {
+        background-color: #297fb8;
+        &:hover {
+            background-color: #2d6d97;
+        }
+    }
+}
+
+.words-list--review-wrap {
+    margin: 3em 10%;
+
+    mat-card {
+        margin: 10px 0px;
+        display: flex;
+        align-items: center;
+
+        mat-card-title {
+            font-size: 1.2em;
+            font-weight: 400;
+        }
+
+        mat-card-subtitle {
+            margin-bottom: 0px;
+        }
+
+        .options {
+            cursor: pointer;
+            color: #3d70bf;
+            position: absolute;
+            right: 12px;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+        }
+    }
+}

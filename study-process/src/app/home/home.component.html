@@ -3,29 +3,19 @@
 <h1 class="">My Decks</h1>
 
 <mat-divider></mat-divider>
-<div class="add-memoCard--wrap">
-    <div class="example-button-row">
-        <div class="example-flex-container">
-            <div class="example-button-container">
-                <button mat-fab color="primary" aria-label="Example icon button with a delete icon"
-                    (click)="openDialog()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div>
     <mat-card *ngFor="let card of memoCards" (click)="openDeck(card)">
         <div class="mat-menu--wrap">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" (click)="onEvent($event)">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                (click)="onEvent($event)">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="openEditDialog(card)">
                     <mat-icon>edit</mat-icon>
-                    <span>Edit</span> 
+                    <span>Edit</span>
                 </button>
                 <button mat-menu-item (click)="openDeleteConfirmDialog(card.id)">
                     <mat-icon>delete</mat-icon>
@@ -39,4 +29,10 @@
         </div>
     </mat-card>
 
+</div>
+
+<div class="flow-btn-bottom-right--wrap">
+    <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>
