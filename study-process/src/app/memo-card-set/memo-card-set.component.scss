@@ -43,6 +43,7 @@
         margin: 10px 0px;
         display: flex;
         align-items: center;
+        cursor: pointer;
 
         mat-card-title {
             font-size: 1.2em;
@@ -64,4 +65,9 @@
             align-items: center;
         }
     }
+}
+
+.delete-card{
+    margin-left: 10px;
+    color: #bbc6d6;
 }

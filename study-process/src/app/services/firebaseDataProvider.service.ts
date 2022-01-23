@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc, updateDoc } from "@angular/fire/firestore";
+import { AppHelper } from "../models/AppHelper";
+import { CardModel, CardSet } from "../models/Card";
 
 @Injectable()
 export class FirebaseDataProviderService {
+
 
 
 
@@ -29,14 +32,22 @@ export class FirebaseDataProviderService {
     }
 
 
-    getMemoCardsByUserName(userId: string): Promise<any> {
+    getMemoCardsByUserName(userId: string | undefined): Promise<any> {
+        if (!userId) {
+            let stringUser = localStorage.getItem('user');
+            if (stringUser)
+                userId = JSON.parse(stringUser);
+        }
+
         let promise = new Promise((resolve, reject) => {
 
             const usersRef = collection(this.firestore, 'memoCards');
             const q = query(usersRef, where("userId", "==", userId));
 
             getDocs(q).then(res => {
-                resolve(res.docs.map(x => this.mapMemoCardModel(x.id, x.data())));
+                let result = res.docs.map(x => this.mapMemoCardModel(x.id, x.data()));
+                localStorage.setItem("memoCardSets", JSON.stringify(result));
+                resolve(result);
             });
         });
         return promise;
@@ -47,15 +58,25 @@ export class FirebaseDataProviderService {
     }
 
     createNewDeck(deckModel: { title: string; items: never[]; userId: any; }) {
-        setDoc(doc(this.firestore, "memoCards", this.generateGuid()), deckModel);
+        setDoc(doc(this.firestore, "memoCards", AppHelper.generateGuid()), deckModel);
     }
 
-    async updateMemoCardTitleById(cardId: string, title: string): Promise<void> {
+    
+    async updateMemoCardSetTitleById(cardId: string, title: string): Promise<void> {
         if (!cardId || !title)
-            return;
-
+        return;
+        
         return updateDoc(doc(this.firestore, "memoCards", cardId), {
             title: title
+        });
+    }
+
+    async updateCardItemsById(model: CardSet) {
+        if (!model)
+            return;
+
+        return updateDoc(doc(this.firestore, "memoCards", model.id), {
+            items: model.items
         });
     }
 
@@ -76,16 +97,6 @@ export class FirebaseDataProviderService {
         };
     }
 
-    private generateGuid() {
-        var result, i, j;
-        result = '';
-        for (j = 0; j < 32; j++) {
-            if (j == 8 || j == 12 || j == 16 || j == 20)
-                result = result + '-';
-            i = Math.floor(Math.random() * 16).toString(16).toUpperCase();
-            result = result + i;
-        }
-        return result;
-    }
+
 
 }

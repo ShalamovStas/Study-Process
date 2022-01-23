@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Create or edit word</h1>
+<div mat-dialog-content>
+    <p>
+        <mat-form-field appearance="standard">
+            <mat-label>Front side</mat-label>
+            <!-- <input matInput required [(ngModel)]="word"> -->
+            <textarea matInput rows="5" required [(ngModel)]="cardModel.frontSide"></textarea>
+            <mat-hint>Memorize the definition</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Back side</mat-label>
+            <!-- <input matInput required [(ngModel)]="word"> -->
+            <textarea matInput rows="5" [(ngModel)]="cardModel.backSide"></textarea>
+            <mat-hint>Description or translate: learn by heart, commit to  memory</mat-hint>
+        </mat-form-field>
+    </p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="cardModel" cdkFocusInitial [disabled]='!cardModel.frontSide'>Ok</button>
+</div>

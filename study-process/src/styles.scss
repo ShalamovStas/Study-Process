@@ -15,6 +15,10 @@ mat-divider {
   margin: 10px 0px 10px 0px !important;
 }
 
+.mat-dialog-actions {
+  justify-content: end;
+}
+
 .flow-btn-bottom-right--wrap{
   position: fixed;
   bottom: 20px;

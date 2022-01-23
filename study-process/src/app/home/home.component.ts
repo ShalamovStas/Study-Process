@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CreateMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 import { DeleteMemoCardDialogComponent } from './dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
-import { Card } from '../models/Card';
+import { CardSet } from '../models/Card';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,7 @@ import { Card } from '../models/Card';
 })
 export class HomeComponent implements OnInit {
   user: any;
-  memoCards: Array<Card> = [];
+  memoCards: Array<CardSet> = [];
 
   constructor(private router: Router, private db: FirebaseDataProviderService, 
     public dialog: MatDialog,
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
       if (!newCard)
         return;
 
-      this.db.updateMemoCardTitleById(newCard.id, newCard.title).then(() => {
+      this.db.updateMemoCardSetTitleById(newCard.id, newCard.title).then(() => {
         for (let index = 0; index < this.memoCards.length; index++) {
           if (this.memoCards[index].id == newCard.id) {
             this.memoCards[index] = newCard;
@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit {
     this.db.getMemoCardsByUserName(this.user.id).then(response => {
       console.log(response);
       this.memoCards = response;
-      localStorage.setItem("memoCards", JSON.stringify(response));
+      localStorage.setItem("memoCardSets", JSON.stringify(response));
     })
   }
 
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  openDeck(card: Card){
+  openDeck(card: CardSet){
     console.log("open deck");
     this._router.navigate(['/memoCard', card.id]);
   }
