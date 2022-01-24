@@ -1,0 +1,12 @@
+<p>card-set-review works!</p>
+<div *ngIf="stepperService.isReady">
+    
+
+    <p>{{stepperService.currentItem?.frontSide}}</p>
+    <hr>
+    <p>{{stepperService.currentItem?.backSide}}</p>
+
+    <button (click)="stepperService.getPreviousStep()">back</button>
+    <button (click)="stepperService.getNextStep()">next</button>
+
+</div>
