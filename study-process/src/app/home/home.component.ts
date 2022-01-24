@@ -16,8 +16,7 @@ export class HomeComponent implements OnInit {
   memoCards: Array<CardSet> = [];
 
   constructor(private router: Router, private db: FirebaseDataProviderService, 
-    public dialog: MatDialog,
-    private _router: Router) { }
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     let stringUser = localStorage.getItem('user');
@@ -128,7 +127,7 @@ export class HomeComponent implements OnInit {
 
   openDeck(card: CardSet){
     console.log("open deck");
-    this._router.navigate(['/memoCard', card.id]);
+    this.router.navigate(['/memoCard', card.id]);
   }
 
 }

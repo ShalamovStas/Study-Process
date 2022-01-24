@@ -19,7 +19,7 @@ export class FirebaseDataProviderService {
 
             getDocs(q).then(res => {
                 if (res.docs.length === 0)
-                    resolve(undefined);
+                    resolve(undefined); 
 
                 res.docs.forEach(doc => {
                     let user = doc.data();

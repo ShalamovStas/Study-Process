@@ -9,5 +9,5 @@ export class CardModel {
     id: string = '';
     frontSide: string = '';
     backSide: string = '';
-    inUse: boolean = false;
+    inUse: boolean = true;
 }

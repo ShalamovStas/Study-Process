@@ -1,10 +1,12 @@
-<h1 mat-dialog-title>Create or edit deck</h1>
-<div mat-dialog-content>
-  <mat-form-field appearance="fill">
-    <mat-label>title</mat-label>
-    <input matInput required [(ngModel)]="cardModel.title">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="cardModel" cdkFocusInitial [disabled]='!cardModel.title'>Ok</button>
+<div>
+  <h1 mat-dialog-title>Create or edit deck</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>title</mat-label>
+      <input matInput required [(ngModel)]="cardModel.title">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="cardModel" cdkFocusInitial [disabled]='!cardModel.title'>Ok</button>
+  </div>
 </div>

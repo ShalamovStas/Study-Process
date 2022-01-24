@@ -42,6 +42,10 @@ import { MemoCardSetComponent } from './memo-card-set/memo-card-set.component';
 import { ToolbarComponent } from './layout/toolbar/toolbar.component';
 import { CreateWordDialogComponent } from './dialogs/create-word-dialog/create-word-dialog.component';
 import { DeleteConfirmationDialogComponent } from './dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { CardSetReviewComponent } from './card-set-review/card-set-review.component';
+
+import {Element100vhComponent} from './directives/set-element-100vh.directive'
+import {StepperService} from './services/StepperService'
 
 
 const firebaseConfig = {
@@ -65,7 +69,9 @@ const firebaseConfig = {
     MemoCardSetComponent,
     ToolbarComponent,
     CreateWordDialogComponent,
-    DeleteConfirmationDialogComponent
+    DeleteConfirmationDialogComponent,
+    CardSetReviewComponent,
+    Element100vhComponent
   ],
   imports: [
     MaterialExampleModule,
@@ -80,10 +86,14 @@ const firebaseConfig = {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
   ],
+  exports: [
+    Element100vhComponent
+  ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     AuthGuard,
     FirebaseDataProviderService,
+    StepperService
   ],
   bootstrap: [AppComponent]
 })

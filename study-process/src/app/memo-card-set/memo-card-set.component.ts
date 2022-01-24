@@ -132,4 +132,8 @@ export class MemoCardSetComponent implements OnInit {
     });
   }
 
+  onCardSetReviewClick(){
+    this.router.navigate(['cardSetReview', this.cardSet.id]);
+  }
+
 }

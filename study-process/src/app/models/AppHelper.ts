@@ -2,7 +2,6 @@ import { CardSet } from "./Card";
 
 export class AppHelper {
     public static updateCachedCardSet(cardSet: CardSet) {
-
         let cachedCardSetList = this.getLocalStorageCardSetList();
 
         for (let index = 0; index < cachedCardSetList.length; index++) {
