@@ -1,16 +1,36 @@
 .example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.router-outlet--wrap {
+  @media screen and (min-width: 1000px) {
+    width: 800px;
+    margin: auto;
   }
-  
-  .example-full-width {
-    width: 100%;
+
+  @media screen and (max-width: 1000px) {
+    width: 700px;
+    margin: auto;
   }
-  
-  .router-outlet--wrap{
-    @media screen and (min-width: 1000px) {
-      max-width: 1000px;
-      margin: auto;
-    }
+
+  @media screen and (max-width: 800px) {
+    width: 500px;
+    margin: auto;
   }
+
+  @media screen and (max-width: 550px) {
+    width: 350px;
+    margin: auto;
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 330px;
+    margin: auto;
+  }
+}

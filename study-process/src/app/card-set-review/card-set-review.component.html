@@ -1,12 +1,31 @@
-<p>card-set-review works!</p>
 <div *ngIf="stepperService.isReady">
-    
+    <div class="progress-wrap">
+        Progress: <strong>{{stepperService.currentStepIndex + 1}}/{{stepperService.items?.length}}</strong>
+        <mat-progress-bar mode="determinate" [value]="stepperService.currentProgressPers"></mat-progress-bar>
+    </div>
 
-    <p>{{stepperService.currentItem?.frontSide}}</p>
-    <hr>
-    <p>{{stepperService.currentItem?.backSide}}</p>
+    <div>
+        <mat-card [@fadeInOut-1]>
+            <div>
 
-    <button (click)="stepperService.getPreviousStep()">back</button>
-    <button (click)="stepperService.getNextStep()">next</button>
+                <div class="item--text">
+                    <mat-card-title>{{stepperService.currentItem?.frontSide}}</mat-card-title>
+                </div>
+                <div class="divider"></div>
+                <div class="item--text back-side">
+                    {{stepperService.currentItem?.backSide}}
+                </div>
+            </div>
+        </mat-card>
+    </div>
+
+    <div class="control-panel--wrap">
+        <button mat-fab color="primary" (click)="stepperService.getPreviousStep()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <button mat-fab color="primary" (click)="stepperService.getNextStep()">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
 
 </div>

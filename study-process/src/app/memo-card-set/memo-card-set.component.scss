@@ -1,76 +1,89 @@
 .content--wrap {
-    background-color: white;
-    height: 100%;
-    width: 100%;
-    color: white;
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  color: white;
 
-    &.item-btn {
-        font-size: 1.2em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 2px;
-        cursor: pointer;
-        border-radius: 10px;
+  &.item-btn {
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    cursor: pointer;
+    border-radius: 10px;
 
-        mat-icon {
-            font-size: 5em;
-            width: fit-content;
-            height: fit-content;
-        }
+    @media screen and (max-width: 400px) {
+      font-size: 12px;
     }
 
-    &.words-list-btn {
-        background-color: #16a086;
-        &:hover {
-            background-color: #208b78;
-        }
+    mat-icon {
+      font-size: 5em;
+      width: fit-content;
+      height: fit-content;
     }
+  }
 
-    &.training-cards-btn {
-        background-color: #297fb8;
-        &:hover {
-            background-color: #2d6d97;
-        }
+  &.words-list-btn {
+    background-color: #16a086;
+    &:hover {
+      background-color: #208b78;
     }
+  }
+
+  &.training-cards-btn {
+    background-color: #297fb8;
+    &:hover {
+      background-color: #2d6d97;
+    }
+  }
 }
 
 .words-list--review-wrap {
-    margin: 3em 10%;
+  margin: 3em 10%;
 
-    mat-card {
-        margin: 10px 0px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
+  mat-card {
+    margin: 10px 0px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
-        mat-card-title {
-            font-size: 1.2em;
-            font-weight: 400;
-        }
-
-        mat-card-subtitle {
-            margin-bottom: 0px;
-        }
-
-        .options {
-            cursor: pointer;
-            color: #3d70bf;
-            position: absolute;
-            right: 12px;
-            top: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-        }
+    mat-card-title {
+      font-size: 1.2em;
+      font-weight: 400;
     }
+
+    mat-card-subtitle {
+      margin-bottom: 0px;
+    }
+
+    .options {
+      cursor: pointer;
+      color: #3d70bf;
+      position: absolute;
+      right: 12px;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
-.delete-card{
-    margin-left: 10px;
-    color: #bbc6d6;
+.delete-card {
+  margin-left: 10px;
+  color: #bbc6d6;
 }
 
-.wrap{
+.wrap {
+  padding: 20px;
+
+  .mat-grid-tile-content {
+    height: 90% !important;
+  }
+}
+
+.card-set-item--text {
+  margin-right: 82px;
 }

@@ -3,11 +3,13 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class StepperService<T> {
     public isReady = false;
-    private items: Array<T> = [];
+    public items: Array<T> = [];
 
-    private currentStepIndex: number = 0;
+    public currentStepIndex: number = 0;
 
     public currentItem: T | undefined;
+
+    public currentProgressPers = 0;
 
     init(items: Array<T>) {
         this.items = items;
@@ -17,6 +19,7 @@ export class StepperService<T> {
 
     getCurrentStep() {
         this.currentItem = this.items[this.currentStepIndex];
+        this.currentProgressPers = this.currentStepIndex * 100/(this.items.length - 1);
         return this.items[this.currentStepIndex];
     }
 

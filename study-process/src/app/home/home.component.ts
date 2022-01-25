@@ -5,6 +5,7 @@ import { CreateMemoCardDialogComponent } from './dialogs/create-memo-card-dialog
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 import { DeleteMemoCardDialogComponent } from './dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
 import { CardSet } from '../models/Card';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +16,8 @@ export class HomeComponent implements OnInit {
   user: any;
   memoCards: Array<CardSet> = [];
 
-  constructor(private router: Router, private db: FirebaseDataProviderService, 
-    public dialog: MatDialog) { }
+  constructor(private router: Router, private db: FirebaseDataProviderService,
+    public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     let stringUser = localStorage.getItem('user');
@@ -42,7 +43,7 @@ export class HomeComponent implements OnInit {
       console.log('The dialog was closed');
       console.log(newDeckTitle);
       if (newDeckTitle)
-        this.createNewDeck(newDeckTitle);
+        this.createNewDeck(newDeckTitle.title);
     });
   }
 
@@ -86,6 +87,7 @@ export class HomeComponent implements OnInit {
     // this.memoCards.push({
     //   title: title + this.memoCards.length
     // });
+    this._snackBar.open(`${title} created!`, 'Ok');
   }
 
   getData() {
@@ -93,7 +95,7 @@ export class HomeComponent implements OnInit {
       console.log(response);
       this.memoCards = response;
       localStorage.setItem("memoCardSets", JSON.stringify(response));
-    })
+    });
   }
 
   onEvent(event: any) {
@@ -121,11 +123,12 @@ export class HomeComponent implements OnInit {
     console.log(id);
 
     this.db.deleteMemoCardById(id).then(() => {
-      this.getData()
+      this.getData();
+      this._snackBar.open(`Deleted`, 'Ok');
     });
   }
 
-  openDeck(card: CardSet){
+  openDeck(card: CardSet) {
     console.log("open deck");
     this.router.navigate(['/memoCard', card.id]);
   }

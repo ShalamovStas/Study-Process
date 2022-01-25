@@ -1,6 +1,5 @@
 <div id="test" class="wrap">
-    <app-toolbar></app-toolbar>
-    <mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
+    <mat-grid-list [cols]="breakpoint" rowHeight="2:0.9" (window:resize)="onResize($event)">
         <mat-grid-tile (click)="onCardSetReviewClick()">
             <div class="content--wrap item-btn words-list-btn">
                 <mat-icon>view_list</mat-icon>
@@ -17,16 +16,15 @@
 
     <mat-divider></mat-divider>
 
-
     <div *ngIf="cardSet && cardSet.items" class="words-list--review-wrap">
-        <mat-card *ngFor="let card of cardSet?.items">
+        <mat-card *ngFor="let card of cardSet?.items" matRipple   (click)="toggleWord(card)">
             <div class="options">
-                <mat-icon *ngIf="card.inUse" (click)="toggleWord(card)">bookmark</mat-icon>
-                <mat-icon *ngIf="!card.inUse" (click)="toggleWord(card)">bookmark_outline</mat-icon>
+                <mat-icon *ngIf="card.inUse" >bookmark</mat-icon>
+                <mat-icon *ngIf="!card.inUse">bookmark_outline</mat-icon>
                 <mat-icon (click)="openDialogEdit(card)">edit</mat-icon>
                 <mat-icon class="delete-card" (click)="openDialogDelete(card)">delete</mat-icon>
             </div>
-            <div>
+            <div class="card-set-item--text">
 
                 <mat-card-title>{{card.frontSide}}</mat-card-title>
                 <mat-card-subtitle>{{card.backSide}}</mat-card-subtitle>

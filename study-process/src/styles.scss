@@ -3,12 +3,11 @@
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
-  padding: 30px;
 }
 
 html,
 body {
-  background-color: $color-login-background;
+  background-color: $color-body-background;
 }
 
 mat-divider {
