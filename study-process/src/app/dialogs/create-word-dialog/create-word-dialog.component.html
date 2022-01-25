@@ -4,7 +4,7 @@
         <mat-form-field appearance="standard">
             <mat-label>Front side</mat-label>
             <!-- <input matInput required [(ngModel)]="word"> -->
-            <textarea matInput rows="5" required [(ngModel)]="cardModel.frontSide"></textarea>
+            <textarea matInput rows="5" required [(ngModel)]="cardModel.frontSide" cdkFocusInitial (keydown.control.enter)="closeDialog()"></textarea>
             <mat-hint>Memorize the definition</mat-hint>
         </mat-form-field>
     </p>
@@ -12,7 +12,7 @@
         <mat-form-field appearance="fill">
             <mat-label>Back side</mat-label>
             <!-- <input matInput required [(ngModel)]="word"> -->
-            <textarea matInput rows="5" [(ngModel)]="cardModel.backSide"></textarea>
+            <textarea matInput rows="5" [(ngModel)]="cardModel.backSide" (keydown.control.enter)="closeDialog()"></textarea>
             <mat-hint>Description or translate: learn by heart, commit to  memory</mat-hint>
         </mat-form-field>
     </p>

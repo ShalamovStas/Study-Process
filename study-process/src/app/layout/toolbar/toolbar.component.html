@@ -1,14 +1,23 @@
 <p>
     <mat-toolbar color="primary">
-        <button *ngIf="!routeHome" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="onBackClick()">
+        <button *ngIf="toolbarIcon === toolbarIcons.BackBtn" mat-icon-button class="example-icon"
+            aria-label="Example icon-button with menu icon" (click)="onBackClick()">
             <mat-icon>arrow_back</mat-icon>
         </button>
 
-        <button *ngIf="routeHome" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="onMenuToggle()">
+        <button *ngIf="toolbarIcon === toolbarIcons.Menu" mat-icon-button class="example-icon"
+            aria-label="Example icon-button with menu icon" (click)="onMenuToggle()">
             <mat-icon>menu</mat-icon>
         </button>
 
         <span style="margin-left: 15px;">MemoCards</span>
-        <span class="example-spacer"></span>
+        <span class="spacer"></span>
+        <button mat-icon-button class="example-icon favorite-icon" [matMenuTriggerFor]="menu"
+        *ngIf="toolbarIcon !== toolbarIcons.NoBtn">
+            <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logout()">Log Out</button>
+          </mat-menu>
     </mat-toolbar>
 </p>

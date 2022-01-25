@@ -12,10 +12,22 @@ export class CreateWordDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CreateWordDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public cardModel: CardModel,
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  closeDialog() {
+    if (!this.cardModel || !this.cardModel.frontSide) {
+      return;
+    }
+
+    this.dialogRef.close(this.cardModel);
+  }
+
+  keyUp(event: any){
+    console.log(event)
   }
 
 }

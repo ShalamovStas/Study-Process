@@ -4,8 +4,8 @@
         <mat-progress-bar mode="determinate" [value]="stepperService.currentProgressPers"></mat-progress-bar>
     </div>
 
-    <div>
-        <mat-card [@fadeInOut-1]>
+    <div class="padding-10" (click)="stepperService.getNextStep()">
+        <mat-card [@fadeInOut-1] matRipple [matRippleRadius]="radius">
             <div>
 
                 <div class="item--text">

@@ -9,6 +9,8 @@
 }
 
 .router-outlet--wrap {
+  padding: 10px;
+
   @media screen and (min-width: 1000px) {
     width: 800px;
     margin: auto;
@@ -25,12 +27,7 @@
   }
 
   @media screen and (max-width: 550px) {
-    width: 350px;
-    margin: auto;
-  }
-
-  @media screen and (max-width: 400px) {
-    width: 330px;
+    width: fill-available;
     margin: auto;
   }
 }

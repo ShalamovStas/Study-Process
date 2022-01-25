@@ -17,14 +17,25 @@
     <mat-divider></mat-divider>
 
     <div *ngIf="cardSet && cardSet.items" class="words-list--review-wrap">
-        <mat-card *ngFor="let card of cardSet?.items" matRipple   (click)="toggleWord(card)">
+        <mat-card *ngFor="let card of cardSet?.items" matRipple>
             <div class="options">
-                <mat-icon *ngIf="card.inUse" >bookmark</mat-icon>
-                <mat-icon *ngIf="!card.inUse">bookmark_outline</mat-icon>
-                <mat-icon (click)="openDialogEdit(card)">edit</mat-icon>
-                <mat-icon class="delete-card" (click)="openDialogDelete(card)">delete</mat-icon>
+                <mat-icon *ngIf="card.inUse" (click)="toggleWord(card)">bookmark</mat-icon>
+                <mat-icon *ngIf="!card.inUse" (click)="toggleWord(card)">bookmark_outline</mat-icon>
+                <!-- <mat-icon class="delete-card" (click)="openDialogDelete(card)">delete</mat-icon> -->
+                <mat-icon class="delete-card" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="openDialogEdit(card)">
+                        <mat-icon >edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="openDialogDelete(card)">
+                        <mat-icon >delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                </mat-menu>
             </div>
-            <div class="card-set-item--text">
+            <div class="card-set-item--text" (click)="toggleWord(card)">
 
                 <mat-card-title>{{card.frontSide}}</mat-card-title>
                 <mat-card-subtitle>{{card.backSide}}</mat-card-subtitle>

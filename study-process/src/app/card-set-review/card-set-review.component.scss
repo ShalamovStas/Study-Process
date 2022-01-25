@@ -8,7 +8,7 @@ mat-card {
   justify-content: center;
   margin-bottom: 10%;
 
-  &>:first-child{
+  & > :first-child {
     width: 100%;
   }
 
@@ -46,6 +46,19 @@ mat-card {
 }
 
 .progress-wrap {
-    color: #a1a1a1;
-    margin: 20px 15%;
+  color: #a1a1a1;
+  margin: 20px 15%;
+}
+mat-card{
+  cursor: pointer;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.padding-10 {
+  // padding: 15px;
 }

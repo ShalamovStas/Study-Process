@@ -32,6 +32,7 @@ export const fadeInOut = (name = 'fadeInOut', duration = 0.1) =>
 })
 export class CardSetReviewComponent extends BaseCardSetComponent implements OnInit {
 
+  radius: number = 15;
   constructor(injector: Injector, public stepperService: StepperService<CardModel>) {
     super(injector);
   }

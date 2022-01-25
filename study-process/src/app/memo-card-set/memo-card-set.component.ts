@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -27,6 +27,13 @@ export class MemoCardSetComponent implements OnInit {
     public dialog: MatDialog,
     private db: FirebaseDataProviderService) {
     this.breakpoint = (window.innerWidth <= this.breakPointWindowWidth) ? 1 : 2;
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if(event.key === "+" && this.dialog.openDialogs.length === 0){
+      this.openDialogCreate();
+    }
   }
 
   ngOnInit(): void {
@@ -90,6 +97,8 @@ export class MemoCardSetComponent implements OnInit {
 
       this.db.updateCardItemsById(this.cardSet).then(() => { });
       AppHelper.updateCachedCardSet(this.cardSet);
+
+      this.openDialogCreate();
     });
   }
 
@@ -132,7 +141,7 @@ export class MemoCardSetComponent implements OnInit {
     });
   }
 
-  onCardSetReviewClick(){
+  onCardSetReviewClick() {
     this.router.navigate(['cardSetReview', this.cardSet.id]);
   }
 
