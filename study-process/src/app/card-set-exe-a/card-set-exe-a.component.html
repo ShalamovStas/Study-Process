@@ -1,0 +1,12 @@
+<div *ngIf="stepper !== undefined">
+    <div class="padding-10" (click)="stepper.next">
+        <mat-card matRipple [matRippleRadius]="radius">
+            <div>
+
+                <div class="item--text">
+                    <mat-card-title ngClass="{backSide: stepper.currentCardSide === 1}">{{stepper.currentItem}}</mat-card-title>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

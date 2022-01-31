@@ -1,0 +1,15 @@
+mat-card {
+  right: 10vw;
+  left: 10vw;
+  position: absolute;
+  top: 15vh;
+  bottom: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+}
+
+.backSide{
+    color: red;
+}

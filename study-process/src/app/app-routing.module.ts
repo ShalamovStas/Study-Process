@@ -5,11 +5,13 @@ import { LoginComponent } from './login/login.component';
 import { MemoCardSetComponent } from './memo-card-set/memo-card-set.component';
 import { CardSetReviewComponent } from './card-set-review/card-set-review.component';
 import { AuthGuard } from './services/guard.service';
+import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'memoCard/:id', component: MemoCardSetComponent},
   {path: 'cardSetReview/:id', component: CardSetReviewComponent},
+  {path: 'cardSetExeA/:id', component: CardSetExeAComponent},
   {path: '**', component: HomeComponent, canActivate: [AuthGuard]},
 ];
 

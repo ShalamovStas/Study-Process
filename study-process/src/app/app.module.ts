@@ -45,7 +45,8 @@ import { DeleteConfirmationDialogComponent } from './dialogs/delete-confirmation
 import { CardSetReviewComponent } from './card-set-review/card-set-review.component';
 
 import {Element100vhComponent} from './directives/set-element-100vh.directive'
-import {StepperService} from './services/StepperService'
+import {StepperService} from './services/StepperService';
+import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component'
 
 
 const firebaseConfig = {
@@ -71,7 +72,8 @@ const firebaseConfig = {
     CreateWordDialogComponent,
     DeleteConfirmationDialogComponent,
     CardSetReviewComponent,
-    Element100vhComponent
+    Element100vhComponent,
+    CardSetExeAComponent
   ],
   imports: [
     MaterialExampleModule,

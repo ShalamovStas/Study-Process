@@ -45,3 +45,14 @@ mat-divider {
   right: 20px;
   z-index: 100;
 }
+
+mat-card {
+  cursor: pointer;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}

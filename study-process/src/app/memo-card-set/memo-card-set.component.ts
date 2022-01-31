@@ -145,4 +145,7 @@ export class MemoCardSetComponent implements OnInit {
     this.router.navigate(['cardSetReview', this.cardSet.id]);
   }
 
+  onCardExeAClick(){
+    this.router.navigate(['cardSetExeA', this.cardSet.id]);
+  }
 }
