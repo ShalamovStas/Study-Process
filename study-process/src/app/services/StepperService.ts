@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { runInThisContext } from "vm";
 import { CardModel } from "../models/Card";
 
 @Injectable()
@@ -41,60 +42,124 @@ export class StepperService<T> {
     }
 }
 
-export enum MemoCardSide {
+export enum MemoCardState {
     Front,
     Back
+}
+
+export enum LearnCardMode {
+    Normal,
+    Reverse
+}
+
+export class CardFrontBackStepper {
+    private currentCardSide = MemoCardState.Front;
+    private _learnMode = LearnCardMode.Normal;
+
+    private currentCard: CardModel = new CardModel();
+
+    get learnMode() {
+        return this._learnMode;
+    }
+
+    setLearnMode(mode: LearnCardMode) {
+        this._learnMode = mode;
+
+        this.initNextCard(this.currentCard);
+    }
+
+    public initNextCard(model: CardModel) {
+        this.currentCard = model;
+        if (this._learnMode === LearnCardMode.Normal) {
+            this.currentCardSide = MemoCardState.Front;
+        }
+        else {
+            this.currentCardSide = MemoCardState.Back;
+        }
+    }
+
+    get currentCardReviewStep() {
+        return this.currentCardSide;
+    }
+
+    public reviewCardSide() {
+        if (this._learnMode === LearnCardMode.Normal) {
+            if (this.currentCardSide === MemoCardState.Front)
+                this.currentCardSide = MemoCardState.Back;
+        }
+        else {
+            if (this.currentCardSide === MemoCardState.Back)
+                this.currentCardSide = MemoCardState.Front;
+        }
+    }
+
+    public getCardSide(): string {
+        switch (this.currentCardSide) {
+            case MemoCardState.Front:
+                return this.currentCard.frontSide;
+            case MemoCardState.Back:
+                return this.currentCard.backSide;
+        }
+    }
+
+    get cardIsReviewed(): boolean {
+        if (this._learnMode === LearnCardMode.Normal) {
+            return this.currentCardSide === MemoCardState.Back;
+        }
+        else {
+            return this.currentCardSide === MemoCardState.Front;
+        }
+    }
 }
 
 export class StepperServiceExeA {
     private currentCard: CardModel = new CardModel();
 
-    private lastIndex: number = 0;
-    currentCardSide = MemoCardSide.Front;
+    public lastIndex: number = 0;
+
+    private сardFrontBackStepper: CardFrontBackStepper = new CardFrontBackStepper()
 
     constructor(private items: Array<CardModel>) {
-        this.currentCardSide = MemoCardSide.Front;
         this.currentCard = items[0];
+        this.initCardStepperByCurrentCard();
         this.next;
     }
 
-    get currentItem(): string {
-        if (this.currentCardSide === MemoCardSide.Front) {
-            return this.currentCard.frontSide;
-        }
-
-        if (this.currentCardSide === MemoCardSide.Back) {
-            return this.currentCard.backSide;
-        }
-
-        return "";
+    setLearnMode(mode : LearnCardMode){
+        this.сardFrontBackStepper.setLearnMode(mode);
     }
 
-    get next(): string {
-        if (this.currentCardSide === MemoCardSide.Front) {
-            this.currentCardSide = MemoCardSide.Back;
-            return this.currentCard.backSide;
-        }
+    get learnMode() {
+        return this.сardFrontBackStepper.learnMode;
+    }
 
-        if (this.currentCardSide === MemoCardSide.Back) {
+    get currentText(): string {
+        return this.сardFrontBackStepper.getCardSide();
+    }
 
-            let index = this.getRandomIntInclusive(0, this.items.length);
+    get currentCardReviewStep(): MemoCardState {
+        return this.сardFrontBackStepper.currentCardReviewStep;
+    }
+
+    private initCardStepperByCurrentCard() {
+        this.сardFrontBackStepper.initNextCard(this.currentCard);
+    }
+
+
+    public next() {
+        if (this.сardFrontBackStepper.cardIsReviewed) {
+
+            let index = this.getRandomIntInclusive(0, this.items.length - 1);
             if (index === this.lastIndex)
-                index = this.getRandomIntInclusive(0, this.items.length);
+                index = this.getRandomIntInclusive(0, this.items.length - 1);
 
             this.lastIndex = index;
 
             this.currentCard = this.items[index];
-            this.currentCardSide = MemoCardSide.Front;
-
-            return this.currentCard.frontSide;
+            this.initCardStepperByCurrentCard();
+        } else {
+            this.сardFrontBackStepper.reviewCardSide();
         }
-
-        return "";
-    }
-
-    getFrontSide(model: CardModel) {
-        return model.frontSide
     }
 
     private getRandomIntInclusive(min: number, max: number) {

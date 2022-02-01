@@ -1,12 +1,23 @@
 <div *ngIf="stepper !== undefined">
-    <div class="padding-10" (click)="stepper.next">
-        <mat-card matRipple [matRippleRadius]="radius">
-            <div>
+    <div class="learn-mode" *ngIf="stepper.learnMode === learnMode.Normal">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">filter_1</mat-icon>
+    </div>
 
+    <div class="learn-mode" *ngIf="stepper.learnMode === learnMode.Reverse">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">filter_2</mat-icon>
+    </div>
+
+    <div class="padding-10" (click)="stepper.next()">
+        <mat-card matRipple [matRippleRadius]="radius"
+            [ngClass]="{'backSide': stepper.currentCardReviewStep === cardSide.Back}">
+            <div>
                 <div class="item--text">
-                    <mat-card-title ngClass="{backSide: stepper.currentCardSide === 1}">{{stepper.currentItem}}</mat-card-title>
+                    <mat-card-title>{{stepper.currentText}}</mat-card-title>
                 </div>
             </div>
         </mat-card>
     </div>
+    <button class="fab-btn" mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="openBottomSheet()">
+        <mat-icon>menu</mat-icon>
+    </button>
 </div>

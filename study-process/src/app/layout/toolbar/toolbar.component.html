@@ -13,7 +13,7 @@
         <span style="margin-left: 15px;">MemoCards</span>
         <span class="spacer"></span>
         <button mat-icon-button class="example-icon favorite-icon" [matMenuTriggerFor]="menu"
-        *ngIf="toolbarIcon !== toolbarIcons.NoBtn">
+        *ngIf="toolbarIcon === toolbarIcons.Menu">
             <mat-icon>person</mat-icon>
         </button>
         <mat-menu #menu="matMenu">

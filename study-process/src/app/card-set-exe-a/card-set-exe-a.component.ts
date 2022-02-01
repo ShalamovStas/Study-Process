@@ -1,7 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { CardModel } from '../models/Card';
 import { BaseCardSetComponent } from '../services/BaserCardSetComponent';
-import { StepperService, StepperServiceExeA } from '../services/StepperService';
+import { LearnCardMode, MemoCardState, StepperService, StepperServiceExeA } from '../services/StepperService';
+import { BottomMenuSelectModeComponent } from './bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component';
 
 @Component({
   selector: 'app-card-set-exe-a',
@@ -13,8 +15,10 @@ export class CardSetExeAComponent extends BaseCardSetComponent implements OnInit
   public stepper: StepperServiceExeA | undefined
   radius: number = 15;
 
+  cardSide = MemoCardState;
+  learnMode = LearnCardMode;
 
-  constructor(injector: Injector) {
+  constructor(injector: Injector, private _bottomSheet: MatBottomSheet) {
     super(injector);
   }
 
@@ -28,4 +32,13 @@ export class CardSetExeAComponent extends BaseCardSetComponent implements OnInit
     });
   }
 
+  openBottomSheet() {
+    const bottomSheetRef = this._bottomSheet.open(BottomMenuSelectModeComponent);
+    bottomSheetRef.afterDismissed().subscribe((result) => {
+      this.stepper?.setLearnMode(result);
+    });
+  }
+  
+
 }
+

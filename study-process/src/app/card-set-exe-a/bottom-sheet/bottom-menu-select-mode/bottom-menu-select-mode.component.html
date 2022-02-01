@@ -1,0 +1,11 @@
+<mat-nav-list>
+    <a href="#" mat-list-item (click)="setMode($event, learnCardMode.Normal)">
+      <span mat-line class="color-primary">Normal mode</span>
+      <span mat-line class="color-grow">First is FRONT side</span>
+    </a>
+  
+    <a href="#" mat-list-item (click)="setMode($event, learnCardMode.Reverse)">
+      <span mat-line class="color-primary">Reverse mode</span>
+      <span mat-line class="color-grow">First is BACK side</span>
+    </a>
+  </mat-nav-list>

@@ -42,7 +42,15 @@ export class ToolbarComponent implements OnInit {
           return;
         }
 
-        if (route.url.match(/cardSetReview.?/)) {
+        if (route.url.match(/cardSetReview.?/) 
+        || 
+        route.url.match(/cardSetExeA.?/) ) {
+          this.toolbarIcon = ToolbarIcon.BackBtn;
+          this.routeCardSetReview = true;
+          return;
+        }
+
+        if (route.url.match(/cardSetExeA.?/)) {
           this.toolbarIcon = ToolbarIcon.BackBtn;
           this.routeCardSetReview = true;
           return;

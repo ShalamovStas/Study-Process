@@ -46,7 +46,8 @@ import { CardSetReviewComponent } from './card-set-review/card-set-review.compon
 
 import {Element100vhComponent} from './directives/set-element-100vh.directive'
 import {StepperService} from './services/StepperService';
-import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component'
+import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component';
+import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component'
 
 
 const firebaseConfig = {
@@ -73,7 +74,8 @@ const firebaseConfig = {
     DeleteConfirmationDialogComponent,
     CardSetReviewComponent,
     Element100vhComponent,
-    CardSetExeAComponent
+    CardSetExeAComponent,
+    BottomMenuSelectModeComponent
   ],
   imports: [
     MaterialExampleModule,
