@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -55,6 +56,7 @@ export class MemoCardSetComponent implements OnInit {
 
       if (thisCardSet) {
         this.cardSet = thisCardSet
+        console.log(thisCardSet);
       }
       else
         this.routeToHome();
@@ -147,5 +149,13 @@ export class MemoCardSetComponent implements OnInit {
 
   onCardExeAClick(){
     this.router.navigate(['cardSetExeA', this.cardSet.id]);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.cardSet.items, event.previousIndex, event.currentIndex);
+
+    console.log("drop")
+    this.db.updateCardItemsById(this.cardSet).then(() => { });
+    AppHelper.updateCachedCardSet(this.cardSet);
   }
 }

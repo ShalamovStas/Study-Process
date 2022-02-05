@@ -1,9 +1,9 @@
 <div *ngIf="stepper !== undefined">
-    <div class="learn-mode" *ngIf="stepper.learnMode === learnMode.Normal">
+    <div class="learn-mode" *ngIf="stepper.learnMode === learnMode.Normal" (click)="openBottomSheet()">
         <mat-icon aria-hidden="false" aria-label="Example home icon">filter_1</mat-icon>
     </div>
 
-    <div class="learn-mode" *ngIf="stepper.learnMode === learnMode.Reverse">
+    <div class="learn-mode" *ngIf="stepper.learnMode === learnMode.Reverse" (click)="openBottomSheet()">
         <mat-icon aria-hidden="false" aria-label="Example home icon">filter_2</mat-icon>
     </div>
 
@@ -17,7 +17,7 @@
             </div>
         </mat-card>
     </div>
-    <button class="fab-btn" mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="openBottomSheet()">
+    <!-- <button class="fab-btn" mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="openBottomSheet()">
         <mat-icon>menu</mat-icon>
-    </button>
+    </button> -->
 </div>

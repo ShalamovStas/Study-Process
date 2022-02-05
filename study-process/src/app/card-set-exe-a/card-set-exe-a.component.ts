@@ -35,10 +35,13 @@ export class CardSetExeAComponent extends BaseCardSetComponent implements OnInit
   openBottomSheet() {
     const bottomSheetRef = this._bottomSheet.open(BottomMenuSelectModeComponent);
     bottomSheetRef.afterDismissed().subscribe((result) => {
+      if (result === undefined)
+        result = this.stepper?.learnMode;
+
       this.stepper?.setLearnMode(result);
     });
   }
-  
+
 
 }
 

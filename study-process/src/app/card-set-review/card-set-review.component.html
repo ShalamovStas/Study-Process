@@ -1,6 +1,11 @@
 
 
 <div *ngIf="stepperService.isReady">
+    <div class="progress-wrap">
+        Progress: <strong>{{stepperService.currentStepIndex + 1}}/{{stepperService.items?.length}}</strong>
+        <mat-progress-bar mode="determinate" [value]="stepperService.currentProgressPers"></mat-progress-bar>
+    </div>
+    
     <div class="padding-10" (click)="stepperService.getNextStep()">
         <mat-card [@fadeInOut-1] matRipple [matRippleRadius]="radius">
             <div>

@@ -13,6 +13,7 @@ mat-card {
   padding: 2em;
   background-color: $color-card-front;
   animation: color-change-reverse 0.1s linear;
+  overflow-y: auto;
 
   &.backSide {
     color: #3f51b5;
@@ -43,6 +44,8 @@ mat-card {
     width: 40px;
     font-size: 30px;
   }
+
+
 }
 
 @keyframes color-change {
