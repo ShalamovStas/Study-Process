@@ -28,7 +28,7 @@ body {
 
 html,
 body {
-  background-color: $color-body-background;
+  background-color: $color-body-background !important;
 }
 
 mat-divider {
@@ -62,3 +62,8 @@ mat-card {
 .color-primary {
   color: $color-primary;
 }
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
