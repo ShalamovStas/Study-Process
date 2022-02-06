@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
       if (!newCard)
         return;
 
-      this.db.updateMemoCardSetTitleById(newCard.id, newCard.title).then(() => {
+      this.db.updateCardSet(newCard).then(() => {
         for (let index = 0; index < this.memoCards.length; index++) {
           if (this.memoCards[index].id == newCard.id) {
             this.memoCards[index] = newCard;

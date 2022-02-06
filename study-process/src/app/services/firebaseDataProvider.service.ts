@@ -63,13 +63,17 @@ export class FirebaseDataProviderService {
     }
 
 
-    async updateMemoCardSetTitleById(cardId: string, title: string): Promise<void> {
-        if (!cardId || !title)
+    async updateCardSet(model: CardSet): Promise<void> {
+        if (!model || !model.id || !model.title)
             return;
 
-        return updateDoc(doc(this.firestore, "memoCards", cardId), {
-            title: title
-        });
+        let objectToSave = JSON.parse(JSON.stringify(model));
+
+        // return updateDoc(doc(this.firestore, "memoCards", cardId), {
+        //     title: title
+        // });
+        return setDoc(doc(this.firestore, "memoCards", model.id), objectToSave);
+
     }
 
     async updateCardItemsById(model: CardSet) {
