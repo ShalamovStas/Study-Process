@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc, updateDoc } from "@angular/fire/firestore";
 import { AppHelper } from "../models/AppHelper";
-import { CardModel, CardSet } from "../models/Card";
+import { CardModel, CardSet, Category } from "../models/Card";
 
 @Injectable()
 export class FirebaseDataProviderService {
@@ -19,7 +19,7 @@ export class FirebaseDataProviderService {
 
             getDocs(q).then(res => {
                 if (res.docs.length === 0)
-                    resolve(undefined); 
+                    resolve(undefined);
 
                 res.docs.forEach(doc => {
                     let user = doc.data();
@@ -57,15 +57,16 @@ export class FirebaseDataProviderService {
         return await deleteDoc(doc(this.firestore, "memoCards", id));
     }
 
-    createNewDeck(deckModel: { title: string; items: never[]; userId: any; }) {
-        setDoc(doc(this.firestore, "memoCards", AppHelper.generateGuid()), deckModel);
+    createNewSet(model: CardSet) {
+        let objectToSave = JSON.parse(JSON.stringify(model));
+        setDoc(doc(this.firestore, "memoCards", AppHelper.generateGuid()), objectToSave);
     }
 
-    
+
     async updateMemoCardSetTitleById(cardId: string, title: string): Promise<void> {
         if (!cardId || !title)
-        return;
-        
+            return;
+
         return updateDoc(doc(this.firestore, "memoCards", cardId), {
             title: title
         });
@@ -88,15 +89,18 @@ export class FirebaseDataProviderService {
         };
     }
 
-    private mapMemoCardModel(id: string, data: any): any {
-        return {
-            id: id,
-            title: data.title,
-            items: data.items,
-            userId: data.userId
-        };
+    private mapMemoCardModel(id: string, data: any): CardSet {
+        if (!data.category)
+            data.category = Category.Heap;
+
+        let cardSet = new CardSet();
+
+        cardSet.id = id;
+        cardSet.category = data.category;
+        cardSet.items = data.items;
+        cardSet.title = data.title;
+        cardSet.userId = data.userId;
+
+        return cardSet;
     }
-
-
-
 }
