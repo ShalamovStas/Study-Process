@@ -1,32 +1,35 @@
-<h1 class="">My MemoCard Sets</h1>
+<h1 class="title">My MemoCard Sets</h1>
 
-<mat-divider></mat-divider>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let card of memoCards">
 
-
-<div>
-    <mat-card *ngFor="let card of memoCards" (click)="openDeck(card)">
-        <div class="mat-menu--wrap">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
-                (click)="onEvent($event)">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="openEditDialog(card)">
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit</span>
-                </button>
-                <button mat-menu-item (click)="openDeleteConfirmDialog(card.id)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete</span>
-                </button>
-            </mat-menu>
+            <mat-card (click)="openDeck(card)">
+                <div class="mat-menu--wrap">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                        (click)="onEvent($event)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openEditDialog(card)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
+                        </button>
+                        <button mat-menu-item (click)="openDeleteConfirmDialog(card.id)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div>
+                    <mat-card-title>{{card.title}}</mat-card-title>
+                    <mat-card-footer>
+                        <mat-card-subtitle>{{card?.items?.length}} cards</mat-card-subtitle>
+                    </mat-card-footer>
+                </div>
+            </mat-card>
         </div>
-        <div>
-            <mat-card-title>{{card.title}}</mat-card-title>
-            <mat-card-subtitle>{{card?.items?.length}} cards</mat-card-subtitle>
-        </div>
-    </mat-card>
-
+    </div>
 </div>
 
 <div class="flow-btn-bottom-right--wrap">
