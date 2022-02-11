@@ -47,7 +47,8 @@ import { CardSetReviewComponent } from './card-set-review/card-set-review.compon
 import {Element100vhComponent} from './directives/set-element-100vh.directive'
 import {StepperService} from './services/StepperService';
 import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component';
-import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component'
+import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component';
+import { FontSizeSetupComponent } from './font-size-setup/font-size-setup.component'
 
 
 const firebaseConfig = {
@@ -75,7 +76,8 @@ const firebaseConfig = {
     CardSetReviewComponent,
     Element100vhComponent,
     CardSetExeAComponent,
-    BottomMenuSelectModeComponent
+    BottomMenuSelectModeComponent,
+    FontSizeSetupComponent
   ],
   imports: [
     MaterialExampleModule,

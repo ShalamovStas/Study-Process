@@ -10,18 +10,21 @@
         <mat-card [@fadeInOut-1] matRipple [matRippleRadius]="radius">
             <div>
 
-                <div class="item--text">
-                    <mat-card-title>{{stepperService.currentItem?.frontSide}}</mat-card-title>
+                <div class="item--text" >
+                    <mat-card-title #frontSide>{{stepperService.currentItem?.frontSide}}</mat-card-title>
                 </div>
                 <div class="divider"></div>
-                <div class="item--text back-side">
+                <div class="item--text back-side" #backSide>
                     {{stepperService.currentItem?.backSide}}
                 </div>
             </div>
         </mat-card>
     </div>
 
+
     <div class="control-panel--wrap">
+        <app-font-size-setup [cardFrontSideEl]="frontSide" [cardBackSideEl]="backSide"></app-font-size-setup>
+
         <button mat-fab color="primary" (click)="stepperService.getPreviousStep()">
             <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
