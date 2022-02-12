@@ -1,3 +1,5 @@
+import { AppHelper } from "./AppHelper";
+
 export enum Category {
     Heap = 0,
     English = 1,
@@ -6,7 +8,7 @@ export enum Category {
 }
 
 export class CardSet {
-    id: string = '';
+    id: string = AppHelper.generateGuid();
     userId: string = '';
     title: string = '';
     items: Array<CardModel> = [];
@@ -14,7 +16,7 @@ export class CardSet {
 }
 
 export class CardModel {
-    id: string = '';
+    id: string = AppHelper.generateGuid();
     frontSide: string = '';
     backSide: string = '';
     inUse: boolean = true;

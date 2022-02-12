@@ -35,7 +35,9 @@ import {
 
 
 import { FirebaseDataProviderService } from './services/firebaseDataProvider.service';
+import { ImportCardSetService } from './services/importCardSetService';
 import { Firestore } from "@angular/fire/firestore";
+import { ImportDialogComponent } from './dialogs/import-dialog/import-dialog.component';
 import { CreateMemoCardDialogComponent } from './home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { DeleteMemoCardDialogComponent } from './home/dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
 import { MemoCardSetComponent } from './memo-card-set/memo-card-set.component';
@@ -77,7 +79,8 @@ const firebaseConfig = {
     Element100vhComponent,
     CardSetExeAComponent,
     BottomMenuSelectModeComponent,
-    FontSizeSetupComponent
+    FontSizeSetupComponent,
+    ImportDialogComponent
   ],
   imports: [
     MaterialExampleModule,
@@ -99,6 +102,7 @@ const firebaseConfig = {
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     AuthGuard,
     FirebaseDataProviderService,
+    ImportCardSetService,
     StepperService
   ],
   bootstrap: [AppComponent]

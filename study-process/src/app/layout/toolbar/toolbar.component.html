@@ -13,11 +13,19 @@
         <span style="margin-left: 15px;">MemoCards</span>
         <span class="spacer"></span>
         <button mat-icon-button class="example-icon favorite-icon" [matMenuTriggerFor]="menu"
-        *ngIf="toolbarIcon === toolbarIcons.Menu">
+            *ngIf="toolbarIcon === toolbarIcons.Menu">
             <mat-icon>person</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="logout()">Log Out</button>
-          </mat-menu>
+            <button mat-menu-item (click)="openDialogImport()">
+                <mat-icon>import_export</mat-icon>
+                <span>Import Set</span>
+                </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Sign out</span>
+                </button>
+        </mat-menu>
     </mat-toolbar>
 </p>

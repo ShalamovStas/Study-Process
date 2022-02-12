@@ -1,4 +1,5 @@
 import { CardSet } from "./Card";
+import { User } from "./User";
 
 export class AppHelper {
     public static updateCachedCardSet(cardSet: CardSet) {
@@ -23,7 +24,7 @@ export class AppHelper {
         return cardSetList;
     }
 
-    public static cacheCardSetList(array: Array<CardSet>){
+    public static cacheCardSetList(array: Array<CardSet>) {
         localStorage.setItem("memoCardSets", JSON.stringify(array));
     }
 
@@ -37,5 +38,15 @@ export class AppHelper {
             result = result + i;
         }
         return result;
+    }
+
+    public static get currentUser(): User | undefined {
+        let modelInLocalStorage = localStorage.getItem('user');
+
+        if (!modelInLocalStorage)
+            return;
+
+        let model = (JSON.parse(modelInLocalStorage) as User);
+        return model;
     }
 }

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ImportDialogComponent } from 'src/app/dialogs/import-dialog/import-dialog.component';
+import { FirebaseDataProviderService } from 'src/app/services/firebaseDataProvider.service';
+import { CardSetImportModel, ImportCardSetService } from 'src/app/services/importCardSetService';
 
 enum ToolbarIcon {
   NoBtn = 0,
@@ -24,7 +28,8 @@ export class ToolbarComponent implements OnInit {
 
   accountBtn: boolean = false;
 
-  constructor(private router: Router, private activateRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activateRoute: ActivatedRoute, private importService: ImportCardSetService, public dialog: MatDialog,
+    private db: FirebaseDataProviderService) { }
 
   ngOnInit(): void {
     this.router.events.subscribe((route) => {
@@ -42,9 +47,9 @@ export class ToolbarComponent implements OnInit {
           return;
         }
 
-        if (route.url.match(/cardSetReview.?/) 
-        || 
-        route.url.match(/cardSetExeA.?/) ) {
+        if (route.url.match(/cardSetReview.?/)
+          ||
+          route.url.match(/cardSetExeA.?/)) {
           this.toolbarIcon = ToolbarIcon.BackBtn;
           this.routeCardSetReview = true;
           return;
@@ -95,5 +100,17 @@ export class ToolbarComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
+  openDialogImport() {
+    let сardSetImportModel = new CardSetImportModel();
 
+    const dialogRef = this.dialog.open(ImportDialogComponent, {
+      minWidth: '70vw',
+      data: сardSetImportModel,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      location.reload();
+    });
+
+  }
 }

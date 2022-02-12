@@ -6,9 +6,6 @@ import { CardModel, CardSet, Category } from "../models/Card";
 @Injectable()
 export class FirebaseDataProviderService {
 
-
-
-
     constructor(private firestore: Firestore) {
     }
 
@@ -57,9 +54,9 @@ export class FirebaseDataProviderService {
         return await deleteDoc(doc(this.firestore, "memoCards", id));
     }
 
-    createNewSet(model: CardSet) {
+    createNewSet(model: CardSet): Promise<any> {
         let objectToSave = JSON.parse(JSON.stringify(model));
-        setDoc(doc(this.firestore, "memoCards", AppHelper.generateGuid()), objectToSave);
+        return setDoc(doc(this.firestore, "memoCards", AppHelper.generateGuid()), objectToSave);
     }
 
 

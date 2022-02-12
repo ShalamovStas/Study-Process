@@ -1,0 +1,15 @@
+.w-100--wrap {
+  display: flex;
+  &.w-100 {
+    flex: 1;
+    width: 100%;
+  }
+
+  .ml-10 {
+    margin-left: 10px;
+  }
+
+  .mr-10 {
+    margin-right: 10px;
+  }
+}
