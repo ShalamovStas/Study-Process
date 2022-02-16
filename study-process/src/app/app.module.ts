@@ -52,6 +52,8 @@ import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component'
 import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component';
 import { FontSizeSetupComponent } from './font-size-setup/font-size-setup.component'
 
+import { NgxEditorModule } from "ngx-editor";
+
 
 //Services
 import { StateService } from './services/StateService';
@@ -95,6 +97,7 @@ const firebaseConfig = {
     ReactiveFormsModule,
     MatNativeDateModule,
     HttpClientModule,
+    NgxEditorModule,
 
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
