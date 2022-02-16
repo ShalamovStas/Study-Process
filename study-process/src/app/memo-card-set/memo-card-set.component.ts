@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Editor, Toolbar, Validators } from 'ngx-editor';
 import { Subscription } from 'rxjs';
-import { isArray } from 'util';
 import { CreateWordDialogComponent } from '../dialogs/create-word-dialog/create-word-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { AppHelper } from '../models/AppHelper';
@@ -112,8 +111,8 @@ export class MemoCardSetComponent implements OnInit {
 
     textJSON.forEach(block => {
       if (block.type === "heading") {
-        myDocumentParts.push(documentBlock);
         documentBlock = new Array<any>();
+        myDocumentParts.push(documentBlock);
       }
       documentBlock.push(block);
     });

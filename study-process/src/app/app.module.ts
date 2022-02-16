@@ -57,6 +57,7 @@ import { NgxEditorModule } from "ngx-editor";
 
 //Services
 import { StateService } from './services/StateService';
+import { ConspectsListComponent } from './conspects-list/conspects-list.component';
 
 
 const firebaseConfig = {
@@ -86,7 +87,8 @@ const firebaseConfig = {
     CardSetExeAComponent,
     BottomMenuSelectModeComponent,
     FontSizeSetupComponent,
-    ImportDialogComponent
+    ImportDialogComponent,
+    ConspectsListComponent
   ],
   imports: [
     MaterialExampleModule,

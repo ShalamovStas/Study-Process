@@ -1,5 +1,5 @@
 <p>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="mat-elevation-z6">
         <button *ngIf="toolbarIcon === toolbarIcons.BackBtn" mat-icon-button class="example-icon"
             aria-label="Example icon-button with menu icon" (click)="onBackClick()">
             <mat-icon>arrow_back</mat-icon>
@@ -17,6 +17,10 @@
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openConspects()">
+                <mat-icon>description</mat-icon>
+                <span>My conspects</span>
+            </button>
             <button mat-menu-item (click)="openDialogImport()">
                 <mat-icon>import_export</mat-icon>
                 <span>Import Set</span>

@@ -129,4 +129,9 @@ export class ToolbarComponent implements OnInit {
   syncData() {
     AppHelper.syncData(this.db);
   }
+
+  openConspects() {
+    console.log("opn conspects")
+    this.router.navigate(['conspects-list']);
+  }
 }
