@@ -14,18 +14,22 @@
         <span class="spacer"></span>
         <button mat-icon-button class="example-icon favorite-icon" [matMenuTriggerFor]="menu"
             *ngIf="toolbarIcon === toolbarIcons.Menu">
-            <mat-icon>person</mat-icon>
+            <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openDialogImport()">
                 <mat-icon>import_export</mat-icon>
                 <span>Import Set</span>
-                </button>
+            </button>
+            <button mat-menu-item (click)="syncData()">
+                <mat-icon>sync</mat-icon>
+                <span>Sync data</span>
+            </button>
             <mat-divider></mat-divider>
             <button mat-menu-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
                 <span>Sign out</span>
-                </button>
+            </button>
         </mat-menu>
     </mat-toolbar>
 </p>

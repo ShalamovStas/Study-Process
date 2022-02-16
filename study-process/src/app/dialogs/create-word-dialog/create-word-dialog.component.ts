@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CardModel } from 'src/app/models/Card';
 
@@ -12,7 +12,9 @@ export class CreateWordDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CreateWordDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public cardModel: CardModel,
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -26,8 +28,12 @@ export class CreateWordDialogComponent {
     this.dialogRef.close(this.cardModel);
   }
 
-  keyUp(event: any){
+  keyUp(event: any) {
     console.log(event)
+  }
+
+  @HostListener('window:keyup.esc') onKeyUp() {
+    this.dialogRef.close();
   }
 
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { ImportDialogComponent } from 'src/app/dialogs/import-dialog/import-dialog.component';
+import { AppHelper } from 'src/app/models/AppHelper';
+import { User } from 'src/app/models/User';
 import { FirebaseDataProviderService } from 'src/app/services/firebaseDataProvider.service';
 import { CardSetImportModel, ImportCardSetService } from 'src/app/services/importCardSetService';
 
@@ -28,10 +30,20 @@ export class ToolbarComponent implements OnInit {
 
   accountBtn: boolean = false;
 
+  user: User | undefined;
+
   constructor(private router: Router, private activateRoute: ActivatedRoute, private importService: ImportCardSetService, public dialog: MatDialog,
     private db: FirebaseDataProviderService) { }
 
   ngOnInit(): void {
+    this.user = AppHelper.currentUser;
+
+    if (!this.user) {
+      localStorage.removeItem('user');
+      this.router.navigate(['login']);
+      return;
+    }
+
     this.router.events.subscribe((route) => {
       if (route instanceof NavigationEnd) {
         this.setFalse();
@@ -112,5 +124,9 @@ export class ToolbarComponent implements OnInit {
       location.reload();
     });
 
+  }
+
+  syncData() {
+    AppHelper.syncData(this.db);
   }
 }

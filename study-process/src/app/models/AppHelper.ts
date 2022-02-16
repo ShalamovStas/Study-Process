@@ -1,3 +1,4 @@
+import { FirebaseDataProviderService } from "../services/firebaseDataProvider.service";
 import { CardSet } from "./Card";
 import { User } from "./User";
 
@@ -8,7 +9,7 @@ export class AppHelper {
         for (let index = 0; index < cachedCardSetList.length; index++) {
             if (cachedCardSetList[index].id == cardSet.id) {
                 cachedCardSetList[index] = cardSet;
-                this.cacheCardSetList(cachedCardSetList);
+                this.addCacheCardSetList(cachedCardSetList);
                 return;
             }
         }
@@ -24,7 +25,7 @@ export class AppHelper {
         return cardSetList;
     }
 
-    public static cacheCardSetList(array: Array<CardSet>) {
+    public static addCacheCardSetList(array: Array<CardSet>) {
         localStorage.setItem("memoCardSets", JSON.stringify(array));
     }
 
@@ -38,6 +39,23 @@ export class AppHelper {
             result = result + i;
         }
         return result;
+    }
+
+    public static syncData(db: FirebaseDataProviderService) {
+        let user = AppHelper.currentUser;
+
+        if (!user) {
+            localStorage.removeItem('user');
+            location.reload;
+            return;
+        }
+
+        db.getMemoCardsByUserName(user?.id).then(response => {
+            console.log("Firebase response");
+            console.log(response);
+            AppHelper.addCacheCardSetList(response);
+            location.reload();
+        });
     }
 
     public static get currentUser(): User | undefined {

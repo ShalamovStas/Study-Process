@@ -1,7 +1,7 @@
 <h1 class="title">My MemoCard Sets</h1>
 
 <!-- TODO : need refactoring -->
-<mat-tab-group mat-align-tabs="center" animationDuration="0ms">
+<mat-tab-group mat-align-tabs="center" animationDuration="0ms" [selectedIndex]="currentTab" (selectedTabChange)="onTabChange($event)">
     <mat-tab label="Heap">
 
         <div class="container mt-4">

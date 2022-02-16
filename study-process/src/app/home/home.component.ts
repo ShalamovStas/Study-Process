@@ -6,6 +6,8 @@ import { FirebaseDataProviderService } from '../services/firebaseDataProvider.se
 import { DeleteMemoCardDialogComponent } from './dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
 import { CardSet, Category } from '../models/Card';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { StateService } from '../services/StateService';
+import { AppHelper } from '../models/AppHelper';
 
 @Component({
   selector: 'app-home',
@@ -21,10 +23,15 @@ export class HomeComponent implements OnInit {
   memoCardsProgramming: Array<CardSet> = [];
   memoCardsOther: Array<CardSet> = [];
 
+  currentTab: number = 0;
+  state: any;
+
   constructor(private router: Router, private db: FirebaseDataProviderService,
-    public dialog: MatDialog, private _snackBar: MatSnackBar) { }
+    public dialog: MatDialog, private _snackBar: MatSnackBar, private stateService: StateService) { }
 
   ngOnInit(): void {
+    this.handleTabState();
+
     let stringUser = localStorage.getItem('user');
     if (stringUser)
       this.user = JSON.parse(stringUser);
@@ -36,6 +43,14 @@ export class HomeComponent implements OnInit {
     }
 
     this.getData();
+  }
+
+  handleTabState() {
+    this.state = this.stateService.state$.getValue() || {};
+    console.log(this.state);
+
+    if (this.state && this.state.currentTab)
+      this.currentTab = this.state.currentTab;
   }
 
   openDialog(): void {
@@ -98,13 +113,24 @@ export class HomeComponent implements OnInit {
   }
 
   getData() {
-    this.db.getMemoCardsByUserName(this.user.id).then(response => {
-      console.log(response);
-      this.memoCards = response;
-      localStorage.setItem("memoCardSets", JSON.stringify(response));
+    let cachedCardSetList = AppHelper.getLocalStorageCardSetList();
 
+    if (!cachedCardSetList) {
+      console.log("Response to firebase");
+      this.db.getMemoCardsByUserName(this.user.id).then(response => {
+        console.log("Firebase response");
+        console.log(response);
+        this.memoCards = response;
+        this.filterSetsByCategories();
+
+        AppHelper.addCacheCardSetList(response);
+      });
+      return;
+    } else {
+      console.log("Cards from cache");
+      this.memoCards = cachedCardSetList;
       this.filterSetsByCategories();
-    });
+    }
   }
 
   filterSetsByCategories() {
@@ -140,13 +166,20 @@ export class HomeComponent implements OnInit {
 
     this.db.deleteMemoCardById(id).then(() => {
       this.getData();
-      this._snackBar.open(`Deleted`, 'Ok');
+      AppHelper.syncData(this.db);
     });
   }
 
   openDeck(card: CardSet) {
+    this.state.currentTab = this.currentTab;
+    this.stateService.state$.next(this.state);
+
     console.log("open deck");
     this.router.navigate(['/memoCard', card.id]);
+  }
+
+  onTabChange(event: any) {
+    this.currentTab = event.index
   }
 
 }

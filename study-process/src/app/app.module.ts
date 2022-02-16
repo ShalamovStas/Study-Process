@@ -53,6 +53,10 @@ import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bot
 import { FontSizeSetupComponent } from './font-size-setup/font-size-setup.component'
 
 
+//Services
+import { StateService } from './services/StateService';
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyBzi3V5dtuoRXbNrecMt9jdg5n4LxVSj3Y",
   authDomain: "study-process.firebaseapp.com",
@@ -103,7 +107,8 @@ const firebaseConfig = {
     AuthGuard,
     FirebaseDataProviderService,
     ImportCardSetService,
-    StepperService
+    StepperService,
+    StateService
   ],
   bootstrap: [AppComponent]
 })
