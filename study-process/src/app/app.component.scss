@@ -32,9 +32,16 @@
   }
 }
 
+mat-drawer {
+  width: 400px;
+}
+
+mat-drawer-content{
+  margin-top: 30px;
+}
 mat-drawer-container {
   position: absolute;
-  top: 64px;
+  top: 55px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -46,4 +53,13 @@ app-toolbar {
   right: 0;
   left: 0;
   z-index: 1000;
+}
+
+mat-nav-list{
+margin-top: 20px;;
+  mat-list-item{
+    span{
+      margin-left: 10px;
+    }
+  }
 }

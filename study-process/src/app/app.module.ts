@@ -53,6 +53,7 @@ import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bot
 import { FontSizeSetupComponent } from './font-size-setup/font-size-setup.component'
 
 import { NgxEditorModule } from "ngx-editor";
+import { EventService } from './services/event.service';
 
 
 //Services
@@ -113,7 +114,8 @@ const firebaseConfig = {
     FirebaseDataProviderService,
     ImportCardSetService,
     StepperService,
-    StateService
+    StateService,
+    EventService
   ],
   bootstrap: [AppComponent]
 })

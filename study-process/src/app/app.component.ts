@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { EventNames, EventService } from './services/event.service';
 
 @Component({
   selector: 'app-root',
@@ -11,20 +12,17 @@ import {map, startWith} from 'rxjs/operators';
 export class AppComponent implements OnInit {
   title = 'study-process';
 
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]> | undefined;
+  toggle = false;
 
-  ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value)),
-    );
+
+  constructor(private eventService: EventService) {
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  ngOnInit(): void {
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    this.eventService.on(EventNames.onDrawerOpenIntent)
+      .subscribe(model => {
+        this.toggle = !this.toggle;
+      });
   }
 }

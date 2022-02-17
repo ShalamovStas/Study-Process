@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular
 import { ImportDialogComponent } from 'src/app/dialogs/import-dialog/import-dialog.component';
 import { AppHelper } from 'src/app/models/AppHelper';
 import { User } from 'src/app/models/User';
+import { EmitEvent, EventNames, EventService } from 'src/app/services/event.service';
 import { FirebaseDataProviderService } from 'src/app/services/firebaseDataProvider.service';
 import { CardSetImportModel, ImportCardSetService } from 'src/app/services/importCardSetService';
 
@@ -33,7 +34,7 @@ export class ToolbarComponent implements OnInit {
   user: User | undefined;
 
   constructor(private router: Router, private activateRoute: ActivatedRoute, private importService: ImportCardSetService, public dialog: MatDialog,
-    private db: FirebaseDataProviderService) { }
+    private db: FirebaseDataProviderService, private eventService: EventService) { }
 
   ngOnInit(): void {
     this.user = AppHelper.currentUser;
@@ -97,7 +98,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   onMenuToggle() {
-
+    this.eventService.emit(new EmitEvent(EventNames.onDrawerOpenIntent, {}));
   }
 
   setFalse() {
@@ -134,4 +135,5 @@ export class ToolbarComponent implements OnInit {
     console.log("opn conspects")
     this.router.navigate(['conspects-list']);
   }
+
 }
