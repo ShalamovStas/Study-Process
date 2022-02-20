@@ -1,1 +1,39 @@
-<p>conspects-list works!</p>
+<div>
+    <h1 class="title">My Conspects</h1>
+
+    <mat-chip-list aria-label="Fish selection">
+        <mat-chip *ngFor="let tag of tags" (click)="onTagSelected(tag)">{{tag.title}}
+        </mat-chip>
+
+        <mat-chip *ngIf="filterTagSelected" color="accent" selected (click)="onTagDrop()">*Drop tag filters
+        </mat-chip>
+    </mat-chip-list>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let item of filteredConspects">
+                <mat-card (click)="openItem(item)">
+                    <div class="mat-menu--wrap">
+                        <button mat-icon-button [matMenuTriggerFor]="menu"
+                            (click)="onEvent($event)">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="openEditDialog(item)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
+                            <button mat-menu-item (click)="openDeleteConfirmDialog(item.id)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                    <div>
+                        <mat-card-title>{{item.title}}</mat-card-title>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

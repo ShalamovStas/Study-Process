@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc, updateDoc } from "@angular/fire/firestore";
 import { AppHelper } from "../models/AppHelper";
 import { CardModel, CardSet, Category } from "../models/Card";
+import { Conspect } from "../models/Conspect";
 
 @Injectable()
 export class FirebaseDataProviderService {
@@ -80,6 +81,29 @@ export class FirebaseDataProviderService {
         return updateDoc(doc(this.firestore, "memoCards", model.id), {
             items: model.items
         });
+    }
+
+
+    async getConspects(userId: string): Promise<Array<Conspect>> {
+        let promise = new Promise<Array<Conspect>>((resolve, reject) => {
+
+            const conspects: Array<any> = new Array<any>();
+
+            let conspect1 = new Conspect();
+            conspect1.id = AppHelper.generateGuid();
+            conspect1.tag = "Савельев";
+            conspect1.title = "С. Савельев Мне так же трудно как и другим";
+
+            let conspect2 = new Conspect();
+            conspect2.id = AppHelper.generateGuid();
+            conspect2.tag = "C#";
+            conspect2.title = "Dot Net Asp Net MVC";
+
+            conspects.push(conspect1);
+            conspects.push(conspect2);
+            resolve(conspects);
+        });
+        return promise;
     }
 
     private mapUserModel(id: string, response: any): any {
