@@ -62,6 +62,27 @@ mat-card {
 .color-primary {
   color: $color-primary;
 }
+
+.dialog-responsive {
+  width: 60vw !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .dialog-responsive {
+      width: 80vw !important;
+  }
+}
+
+.mat-dialog-actions {
+  justify-content: end;
+}
+
+.mat-form-field{
+  width: 100%;
+}
+
+
+
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
 

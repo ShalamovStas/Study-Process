@@ -11,8 +11,7 @@ export class CreateWordDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CreateWordDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public cardModel: CardModel,
-  ) {
+    @Inject(MAT_DIALOG_DATA) public cardModel: CardModel) {
     dialogRef.disableClose = true;
   }
 

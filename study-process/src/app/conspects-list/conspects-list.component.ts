@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Console } from 'console';
-import { Tag } from '../models/Conspect';
+import { CreateConspectDialogComponent } from '../dialogs/create-conspect-dialog/create-conspect-dialog.component';
+import { CreateMemoCardDialogComponent } from '../home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
+import { CardSet } from '../models/Card';
+import { Conspect, Tag } from '../models/Conspect';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 
 @Component({
@@ -14,9 +18,9 @@ export class ConspectsListComponent implements OnInit {
   conspects: Array<any> = new Array<any>();
   filteredConspects: Array<any> = new Array<any>();
 
-  filterTagSelected : boolean = false;
+  filterTagSelected: boolean = false;
 
-  constructor(private db: FirebaseDataProviderService) { }
+  constructor(private db: FirebaseDataProviderService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.db.getConspects("").then(x => {
@@ -45,14 +49,33 @@ export class ConspectsListComponent implements OnInit {
     this.filteredConspects = this.conspects.filter(x => x.tag === tag.title);
   }
 
-  onTagDrop(){
+  onTagDrop() {
     this.filteredConspects = this.conspects;
     this.filterTagSelected = false;
 
   }
 
   openEditDialog(item: any) {
+    const dialogRef = this.dialog.open(CreateConspectDialogComponent, {
+      panelClass: "dialog-responsive",
+      data: item,
+    });
 
+    dialogRef.afterClosed().subscribe(newCardSet => {
+      console.log('The dialog was closed');
+      console.log(newCardSet);
+
+      if (!newCardSet)
+        return;
+
+      for (let index = 0; index < this.conspects.length; index++) {
+        const element = this.conspects[index];
+        if (element.id === item.id) {
+          this.conspects[index] = newCardSet;
+          return;
+        }
+      }
+    });
   }
 
   openDeleteConfirmDialog(item: any) {
@@ -66,4 +89,22 @@ export class ConspectsListComponent implements OnInit {
   onEvent(event: any) {
     event.stopPropagation();
   }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(CreateConspectDialogComponent, {
+      panelClass: "dialog-responsive",
+      data: new Conspect(),
+    });
+
+    dialogRef.afterClosed().subscribe(newCardSet => {
+      console.log('The dialog was closed');
+      console.log(newCardSet);
+
+      if (!newCardSet)
+        return;
+
+      this.conspects.push(newCardSet);
+    });
+  }
+
 }

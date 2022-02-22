@@ -59,6 +59,7 @@ import { EventService } from './services/event.service';
 //Services
 import { StateService } from './services/StateService';
 import { ConspectsListComponent } from './conspects-list/conspects-list.component';
+import { CreateConspectDialogComponent } from './dialogs/create-conspect-dialog/create-conspect-dialog.component';
 
 
 const firebaseConfig = {
@@ -89,7 +90,8 @@ const firebaseConfig = {
     BottomMenuSelectModeComponent,
     FontSizeSetupComponent,
     ImportDialogComponent,
-    ConspectsListComponent
+    ConspectsListComponent,
+    CreateConspectDialogComponent
   ],
   imports: [
     MaterialExampleModule,
