@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc, updateDoc } from "@angular/fire/firestore";
 import { AppHelper } from "../models/AppHelper";
 import { CardModel, CardSet, Category } from "../models/Card";
+import { Conspect } from "../models/Conspect";
 
 @Injectable()
 export class FirebaseDataProviderService {
@@ -82,6 +83,67 @@ export class FirebaseDataProviderService {
         });
     }
 
+    async deleteConspectId(id: string): Promise<void> {
+        return await deleteDoc(doc(this.firestore, "conspects", id));
+    }
+
+    async updateConspect(model: Conspect) {
+        if (!model)
+            return;
+
+        let objectToSave = JSON.parse(JSON.stringify(model));
+        return updateDoc(doc(this.firestore, "conspects", model.id), objectToSave);
+    }
+
+    async createConspect(model: Conspect) {
+        if (!model)
+            return;
+
+        let objectToSave = JSON.parse(JSON.stringify(model));
+        objectToSave.userId = AppHelper.currentUser.id;
+        return setDoc(doc(this.firestore, "conspects", model.id), objectToSave);
+    }
+
+
+    async getConspects(userId: string): Promise<Array<Conspect>> {
+        let promise = new Promise<Array<Conspect>>((resolve, reject) => {
+
+            const usersRef = collection(this.firestore, 'conspects');
+            const q = query(usersRef, where("userId", "==", userId));
+
+            getDocs(q).then(res => {
+                let result = res.docs.map(x => this.mapConspectModel(x.id, x.data()));
+                AppHelper.setCachedConspects(result);
+                resolve(result);
+            });
+
+
+            // const cahched = AppHelper.getCachedConspects();
+            // if (cahched.success) {
+            //     resolve(cahched.item);
+            //     return;
+            // }
+
+            // const conspects: Array<any> = new Array<any>();
+
+            // let conspect1 = new Conspect();
+            // conspect1.id = AppHelper.generateGuid();
+            // conspect1.tag = "Савельев";
+            // conspect1.title = "С. Савельев Мне так же трудно как и другим";
+
+            // let conspect2 = new Conspect();
+            // conspect2.id = AppHelper.generateGuid();
+            // conspect2.tag = "C#";
+            // conspect2.title = "Dot Net Asp Net MVC";
+
+            // conspects.push(conspect1);
+            // conspects.push(conspect2);
+            // AppHelper.setCachedConspects(conspects);
+            // resolve(conspects);
+        });
+        return promise;
+    }
+
     private mapUserModel(id: string, response: any): any {
         return {
             id: id,
@@ -103,5 +165,15 @@ export class FirebaseDataProviderService {
         cardSet.userId = data.userId;
 
         return cardSet;
+    }
+
+    private mapConspectModel(id: string, data: any): Conspect {
+        let model = new Conspect();
+
+        model.id = id;
+        model.html = data.html;
+        model.tag = data.tag;
+        model.title = data.title;
+        return model;
     }
 }

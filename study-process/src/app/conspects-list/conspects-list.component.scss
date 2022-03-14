@@ -1,0 +1,58 @@
+mat-chip{
+    cursor: pointer;
+}
+
+.title {
+    color: #3f51b5;
+}
+
+.mat-card {
+  cursor: pointer;
+  margin-bottom: 10px;
+  position: relative;
+  height: 10em;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+    line-height: 22px;
+    margin-right: 20px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* number of lines to show */
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+
+  mat-card-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0px;
+    border-top: 1px solid #cfcfcf;
+
+    mat-card-subtitle{
+        margin: 5px 10px;
+    }
+  }
+}
+
+.mat-menu--wrap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.add-memoCard--wrap {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+

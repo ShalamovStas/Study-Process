@@ -1,7 +1,9 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, HostListener, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Editor, toHTML, Toolbar, Validators } from 'ngx-editor';
 import { Subscription } from 'rxjs';
 import { CreateWordDialogComponent } from '../dialogs/create-word-dialog/create-word-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
@@ -22,7 +24,6 @@ export class MemoCardSetComponent implements OnInit {
   breakPointWindowWidth = 800;
   toggled = true;
 
-
   constructor(private activateRoute: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
@@ -32,7 +33,7 @@ export class MemoCardSetComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if(event.key === "+" && this.dialog.openDialogs.length === 0){
+    if (event.key === "+" && this.dialog.openDialogs.length === 0) {
       this.openDialogCreate();
     }
   }
@@ -63,6 +64,9 @@ export class MemoCardSetComponent implements OnInit {
     });
 
 
+  }
+
+  ngOnDestroy(): void {
   }
 
   routeToHome() {
@@ -147,7 +151,7 @@ export class MemoCardSetComponent implements OnInit {
     this.router.navigate(['cardSetReview', this.cardSet.id]);
   }
 
-  onCardExeAClick(){
+  onCardExeAClick() {
     this.router.navigate(['cardSetExeA', this.cardSet.id]);
   }
 

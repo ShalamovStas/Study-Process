@@ -1,0 +1,69 @@
+<div>
+    <h1>{{conspect.title}}</h1>
+    <div>
+        <button [hidden]="editMode" mat-stroked-button color="primary" (click)="onLearnConspectModeClick()">
+            <span *ngIf="learnConspectMode">Close learn mode</span>
+            <span *ngIf="!learnConspectMode">Learn conspect</span>
+        </button>
+    </div>
+    <hr>
+</div>
+
+<div [hidden]="!editMode">
+    <div class="close-wrap">
+        <button mat-button color="primary" (click)="closeEditMode()">
+            <mat-icon>close</mat-icon>
+            Close edit
+        </button>
+    </div>
+
+    <div>
+        <form [formGroup]="form">
+            <div class="editor">
+                <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+                </ngx-editor-menu>
+                <ngx-editor [editor]="editor" formControlName="editorContent">
+                </ngx-editor>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div [hidden]="editMode || learnConspectMode" class="mb-150">
+    <div class="conspect" [innerHTML]="conspect.html | safeHtml"></div>
+</div>
+
+<div [hidden]="!learnConspectMode">
+    <div *ngIf="stepperService.isReady">
+        <div class="progress-wrap">
+            Progress: <strong>{{stepperService.currentStepIndex + 1}}/{{stepperService.items?.length}}</strong>
+            <mat-progress-bar mode="determinate" [value]="stepperService.currentProgressPers"></mat-progress-bar>
+        </div>
+
+        <div class="padding-10 mb-150">
+            <div>
+                <h1 [innerHTML]="stepperService.currentItem?.title | safeHtml"></h1>
+            </div>
+            <div [innerHTML]="stepperService.currentItem?.html | safeHtml">
+            </div>
+        </div>
+
+        <div class="control-panel--wrap">
+            <button mat-fab color="primary" (click)="stepperService.getPreviousStep()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <button mat-fab color="primary" (click)="stepperService.getNextStep()">
+                <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="flow-btn-bottom-right--wrap">
+    <button *ngIf="!editMode" mat-fab color="primary" (click)="edit()">
+        <mat-icon>edit</mat-icon>
+    </button>
+    <button *ngIf="editMode" mat-fab color="primary" (click)="save()">
+        <mat-icon>save</mat-icon>
+    </button>
+</div>

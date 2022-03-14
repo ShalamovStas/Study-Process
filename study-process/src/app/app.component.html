@@ -1,5 +1,21 @@
 <!-- Toolbar -->
 <app-toolbar></app-toolbar>
-<div class="router-outlet--wrap">
-    <router-outlet></router-outlet>
-</div>
+<mat-drawer-container class="example-container" [hasBackdrop]="'true'">
+    <mat-drawer #drawer [mode]="'over'" [(opened)]="toggle">
+        <mat-nav-list role="list">
+            <mat-list-item role="listitem" [routerLink]="['/home']" (click)="toggle = !toggle">
+                <mat-icon color="primary">view_stream</mat-icon>
+                <span>Memo Cards</span>
+            </mat-list-item>
+            <mat-list-item role="listitem" [routerLink]="['/conspects-list']" (click)="toggle = !toggle">
+                <mat-icon color="primary">receipt</mat-icon>
+                <span>Conspects</span>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div class="router-outlet--wrap">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

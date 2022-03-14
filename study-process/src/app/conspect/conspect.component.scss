@@ -1,0 +1,41 @@
+p:empty {
+  display: none;
+}
+
+ngx-editor {
+  .ngxEditor {
+    height: 77vh !important;
+    overflow: scroll !important;
+  }
+}
+
+.close-wrap {
+  display: flex;
+  justify-content: end;
+}
+
+.control-panel--wrap {
+  position: fixed;
+  bottom: 5%;
+  right: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin: 0px 10%;
+  }
+}
+
+.progress-wrap {
+  position: fixed;
+  bottom: 15px;
+  right: 10%;
+  left: 10%;
+}
+
+.mb-150{
+  margin-bottom: 150px;
+}

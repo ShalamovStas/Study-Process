@@ -52,9 +52,17 @@ import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component'
 import { BottomMenuSelectModeComponent } from './card-set-exe-a/bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component';
 import { FontSizeSetupComponent } from './font-size-setup/font-size-setup.component'
 
+import { NgxEditorModule } from "ngx-editor";
+import { EventService } from './services/event.service';
+
 
 //Services
 import { StateService } from './services/StateService';
+import { ConspectsListComponent } from './conspects-list/conspects-list.component';
+import { CreateConspectDialogComponent } from './dialogs/create-conspect-dialog/create-conspect-dialog.component';
+import { ConspectComponent } from './conspect/conspect.component';
+import { SafeHtmlPipe } from './services/pipes/SafeHtmlPipe';
+import { EditConspectComponent } from './edit-conspect/edit-conspect.component';
 
 
 const firebaseConfig = {
@@ -84,7 +92,12 @@ const firebaseConfig = {
     CardSetExeAComponent,
     BottomMenuSelectModeComponent,
     FontSizeSetupComponent,
-    ImportDialogComponent
+    ImportDialogComponent,
+    ConspectsListComponent,
+    CreateConspectDialogComponent,
+    ConspectComponent,
+    SafeHtmlPipe,
+    EditConspectComponent
   ],
   imports: [
     MaterialExampleModule,
@@ -95,6 +108,7 @@ const firebaseConfig = {
     ReactiveFormsModule,
     MatNativeDateModule,
     HttpClientModule,
+    NgxEditorModule,
 
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
@@ -108,7 +122,8 @@ const firebaseConfig = {
     FirebaseDataProviderService,
     ImportCardSetService,
     StepperService,
-    StateService
+    StateService,
+    EventService
   ],
   bootstrap: [AppComponent]
 })
