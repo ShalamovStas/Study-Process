@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit {
         this.memoCards = response;
         this.filterSetsByCategories();
 
-        AppHelper.addCacheCardSetList(response);
+        AppHelper.setCacheCardSetList(response);
       });
       return;
     } else {

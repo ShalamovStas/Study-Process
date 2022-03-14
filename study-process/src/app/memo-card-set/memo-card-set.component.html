@@ -1,24 +1,4 @@
 <div id="test" class="wrap">
-
-    <div>
-        Editor:
-    </div>
-
-    <div>
-        <form [formGroup]="form">
-            <div class="editor">
-              <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
-              </ngx-editor-menu>
-              <ngx-editor
-               [editor]="editor"
-               formControlName="editorContent">
-              </ngx-editor>
-            </div>
-          </form>
-          <button mat-button (click)="getEditorData()">Save</button>
-    </div>
-
-    <hr>
     <mat-grid-list [cols]="breakpoint" rowHeight="2:0.9" (window:resize)="onResize($event)">
         <mat-grid-tile (click)="onCardSetReviewClick()">
             <div class="content--wrap item-btn words-list-btn">

@@ -1,7 +1,7 @@
 import { AppHelper } from "./AppHelper";
 
 export class User {
-    id: string =  AppHelper.generateGuid();
+    id: string =  "";
     name: string =  "";
     isEnabled: boolean = true;
 }

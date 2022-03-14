@@ -3,15 +3,13 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Editor, Toolbar, Validators } from 'ngx-editor';
+import { Editor, toHTML, Toolbar, Validators } from 'ngx-editor';
 import { Subscription } from 'rxjs';
 import { CreateWordDialogComponent } from '../dialogs/create-word-dialog/create-word-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { AppHelper } from '../models/AppHelper';
 import { CardModel, CardSet } from '../models/Card';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
-
-import jsonDoc from "./doc";
 
 @Component({
   selector: 'app-memo-card-set',
@@ -25,29 +23,6 @@ export class MemoCardSetComponent implements OnInit {
 
   breakPointWindowWidth = 800;
   toggled = true;
-
-  editordoc = jsonDoc;
-  html: any;
-
-  form = new FormGroup({
-    editorContent: new FormControl(
-      { value: jsonDoc, disabled: false },
-      Validators.required()
-    )
-  });
-
-  editor: Editor = new Editor();
-  toolbar: Toolbar = [
-    ["bold", "italic"],
-    ["underline", "strike"],
-    ["code", "blockquote"],
-    ["ordered_list", "bullet_list"],
-    [{ heading: ["h1", "h2", "h3", "h4", "h5", "h6"] }],
-    ["link", "image"],
-    ["text_color", "background_color"],
-    ["align_left", "align_center", "align_right", "align_justify"]
-  ];
-
 
   constructor(private activateRoute: ActivatedRoute,
     private router: Router,
@@ -64,8 +39,6 @@ export class MemoCardSetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editor = new Editor();
-
     this.subscription = this.activateRoute.params.subscribe(params => {
       let cardId = params["id"];
 
@@ -94,31 +67,6 @@ export class MemoCardSetComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.editor?.destroy();
-  }
-
-  getEditorData() {
-    let textJSON = this.form.get("editorContent")?.value?.content;
-
-    console.log(textJSON);
-
-    if (!textJSON || !Array.isArray(textJSON))
-      return;
-
-    let myDocumentParts = new Array<any>();
-
-    let documentBlock = new Array<any>();
-
-    textJSON.forEach(block => {
-      if (block.type === "heading") {
-        documentBlock = new Array<any>();
-        myDocumentParts.push(documentBlock);
-      }
-      documentBlock.push(block);
-    });
-
-    console.log("myDocumentParts")
-    console.log(myDocumentParts);
   }
 
   routeToHome() {

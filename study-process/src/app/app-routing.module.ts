@@ -7,6 +7,7 @@ import { CardSetReviewComponent } from './card-set-review/card-set-review.compon
 import { AuthGuard } from './services/guard.service';
 import { CardSetExeAComponent } from './card-set-exe-a/card-set-exe-a.component';
 import { ConspectsListComponent } from './conspects-list/conspects-list.component';
+import { ConspectComponent } from './conspect/conspect.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'cardSetReview/:id', component: CardSetReviewComponent},
   {path: 'cardSetExeA/:id', component: CardSetExeAComponent},
   {path: 'conspects-list', component: ConspectsListComponent},
+  {path: 'conspect/:id', component: ConspectComponent},
   {path: '**', component: HomeComponent, canActivate: [AuthGuard]},
 ];
 

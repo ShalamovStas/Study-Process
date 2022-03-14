@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Console } from 'console';
+import { idToken } from 'rxfire/auth';
 import { CreateConspectDialogComponent } from '../dialogs/create-conspect-dialog/create-conspect-dialog.component';
 import { CreateMemoCardDialogComponent } from '../home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
+import { DeleteMemoCardDialogComponent } from '../home/dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
+import { AppHelper } from '../models/AppHelper';
 import { CardSet } from '../models/Card';
 import { Conspect, Tag } from '../models/Conspect';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
@@ -16,19 +20,21 @@ export class ConspectsListComponent implements OnInit {
 
   tags: Array<any> = new Array<any>();
   conspects: Array<any> = new Array<any>();
-  filteredConspects: Array<any> = new Array<any>();
 
   filterTagSelected: boolean = false;
 
-  constructor(private db: FirebaseDataProviderService, public dialog: MatDialog) { }
+  constructor(private db: FirebaseDataProviderService, public dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
-    this.db.getConspects("").then(x => {
-      console.log(x);
-      this.mapTags(x.map(x => x.tag))
+    this.getConspects();
+  }
+
+  getConspects() {
+    this.db.getConspects(AppHelper.currentUser?.id).then(x => {
+      this.mapTags(x.map(x => x.tag));
 
       this.conspects = x;
-      this.filteredConspects = this.conspects;
+      AppHelper.setCachedConspects(this.conspects);
     });
   }
 
@@ -45,45 +51,58 @@ export class ConspectsListComponent implements OnInit {
 
   onTagSelected(tag: any) {
     this.filterTagSelected = true;
-    console.log(tag);
-    this.filteredConspects = this.conspects.filter(x => x.tag === tag.title);
   }
 
   onTagDrop() {
-    this.filteredConspects = this.conspects;
     this.filterTagSelected = false;
-
   }
 
   openEditDialog(item: any) {
+    let objectToEdit = JSON.parse(JSON.stringify(item));
+
     const dialogRef = this.dialog.open(CreateConspectDialogComponent, {
       panelClass: "dialog-responsive",
-      data: item,
+      data: objectToEdit,
     });
 
-    dialogRef.afterClosed().subscribe(newCardSet => {
-      console.log('The dialog was closed');
-      console.log(newCardSet);
-
-      if (!newCardSet)
+    dialogRef.afterClosed().subscribe(model => {
+      if (!model)
         return;
 
       for (let index = 0; index < this.conspects.length; index++) {
         const element = this.conspects[index];
         if (element.id === item.id) {
-          this.conspects[index] = newCardSet;
-          return;
+          this.conspects[index] = model;
+          break;
         }
       }
+
+      this.db.updateConspect(model);
+      AppHelper.setCachedConspects(this.conspects);
     });
   }
 
-  openDeleteConfirmDialog(item: any) {
+  openDeleteConfirmDialog(id: any) {
+    const dialogRef = this.dialog.open(DeleteMemoCardDialogComponent, {
+      maxWidth: '60vw',
+      data: id,
+    });
 
+    dialogRef.afterClosed().subscribe(id => {
+      if (!id)
+        return;
+      this.deleteItem(id);
+    });
+  }
+
+  deleteItem(id: any) {
+    this.conspects = this.conspects.filter(x => x.id !== id);
+    AppHelper.setCachedConspects(this.conspects);
+    this.db.deleteConspectId(id);
   }
 
   openItem(item: any) {
-
+    this.router.navigate(['conspect', item.id]);
   }
 
   onEvent(event: any) {
@@ -91,19 +110,24 @@ export class ConspectsListComponent implements OnInit {
   }
 
   openDialog() {
+    let newConspect = new Conspect();
+    newConspect.id = AppHelper.generateGuid();
+
     const dialogRef = this.dialog.open(CreateConspectDialogComponent, {
       panelClass: "dialog-responsive",
-      data: new Conspect(),
+      data: newConspect,
     });
 
-    dialogRef.afterClosed().subscribe(newCardSet => {
+    dialogRef.afterClosed().subscribe(model => {
       console.log('The dialog was closed');
-      console.log(newCardSet);
+      console.log(model);
 
-      if (!newCardSet)
+      if (!model)
         return;
 
-      this.conspects.push(newCardSet);
+      this.db.createConspect(model);
+      this.conspects.push(model);
+      AppHelper.setCachedConspects(this.conspects);
     });
   }
 

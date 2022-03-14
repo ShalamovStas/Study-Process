@@ -1,15 +1,19 @@
 import { FirebaseDataProviderService } from "../services/firebaseDataProvider.service";
+import { OperationResult } from "./Base";
 import { CardSet } from "./Card";
+import { Conspect } from "./Conspect";
 import { User } from "./User";
 
 export class AppHelper {
+    public static readonly conspectsKey = "conspects";
+
     public static updateCachedCardSet(cardSet: CardSet) {
         let cachedCardSetList = this.getLocalStorageCardSetList();
 
         for (let index = 0; index < cachedCardSetList.length; index++) {
             if (cachedCardSetList[index].id == cardSet.id) {
                 cachedCardSetList[index] = cardSet;
-                this.addCacheCardSetList(cachedCardSetList);
+                this.setCacheCardSetList(cachedCardSetList);
                 return;
             }
         }
@@ -25,8 +29,39 @@ export class AppHelper {
         return cardSetList;
     }
 
-    public static addCacheCardSetList(array: Array<CardSet>) {
+    public static setCacheCardSetList(array: Array<CardSet>) {
         localStorage.setItem("memoCardSets", JSON.stringify(array));
+    }
+
+    public static updateCachedConspect(conspect: Conspect) {
+        let cached = this.getCachedConspects();
+        if (!cached.success)
+            throw "No cached data";
+
+        for (let index = 0; index < cached.item.length; index++) {
+            if (cached.item[index].id == conspect.id) {
+                cached.item[index] = conspect;
+                this.setCachedConspects(cached.item);
+                return;
+            }
+        }
+    }
+
+    public static getCachedConspects(): OperationResult<Array<Conspect>> {
+        let operation = new OperationResult(new Array<Conspect>());
+
+        let cachedConspectList = localStorage.getItem(AppHelper.conspectsKey);
+
+        if (cachedConspectList) {
+            operation.item = JSON.parse(cachedConspectList);
+            operation.success = true;
+        }
+
+        return operation;
+    }
+
+    public static setCachedConspects(array: Array<Conspect>) {
+        localStorage.setItem(AppHelper.conspectsKey, JSON.stringify(array));
     }
 
     public static generateGuid() {
@@ -53,16 +88,16 @@ export class AppHelper {
         db.getMemoCardsByUserName(user?.id).then(response => {
             console.log("Firebase response");
             console.log(response);
-            AppHelper.addCacheCardSetList(response);
+            AppHelper.setCacheCardSetList(response);
             location.reload();
         });
     }
 
-    public static get currentUser(): User | undefined {
+    public static get currentUser(): User {
         let modelInLocalStorage = localStorage.getItem('user');
 
         if (!modelInLocalStorage)
-            return;
+            throw "User not found!";
 
         let model = (JSON.parse(modelInLocalStorage) as User);
         return model;

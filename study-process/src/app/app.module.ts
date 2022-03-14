@@ -60,6 +60,9 @@ import { EventService } from './services/event.service';
 import { StateService } from './services/StateService';
 import { ConspectsListComponent } from './conspects-list/conspects-list.component';
 import { CreateConspectDialogComponent } from './dialogs/create-conspect-dialog/create-conspect-dialog.component';
+import { ConspectComponent } from './conspect/conspect.component';
+import { SafeHtmlPipe } from './services/pipes/SafeHtmlPipe';
+import { EditConspectComponent } from './edit-conspect/edit-conspect.component';
 
 
 const firebaseConfig = {
@@ -91,7 +94,10 @@ const firebaseConfig = {
     FontSizeSetupComponent,
     ImportDialogComponent,
     ConspectsListComponent,
-    CreateConspectDialogComponent
+    CreateConspectDialogComponent,
+    ConspectComponent,
+    SafeHtmlPipe,
+    EditConspectComponent
   ],
   imports: [
     MaterialExampleModule,
