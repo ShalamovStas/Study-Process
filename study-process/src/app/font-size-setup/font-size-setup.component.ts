@@ -18,7 +18,6 @@ export class FontSizeSetupComponent implements OnInit, AfterViewInit {
   constructor() { }
   ngAfterViewInit(): void {
 
-    console.log(this.element);
   }
 
   ngOnInit(): void {
@@ -26,7 +25,6 @@ export class FontSizeSetupComponent implements OnInit, AfterViewInit {
   }
 
   plus() {
-    console.log(this.element?.style.fontSize);
 
     if (this.cardFrontSideEl){
       this.increaseFontSize(this.cardFrontSideEl, this.defaultValueFrontSide)
@@ -38,7 +36,6 @@ export class FontSizeSetupComponent implements OnInit, AfterViewInit {
   }
 
   minus() {
-    console.log(this.element?.style.fontSize);
 
     if (this.cardFrontSideEl){
       this.decreaseFontSize(this.cardFrontSideEl, this.defaultValueFrontSide)

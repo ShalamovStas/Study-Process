@@ -1,13 +1,13 @@
 <!-- Toolbar -->
-<app-toolbar></app-toolbar>
-<mat-drawer-container class="example-container" [hasBackdrop]="'true'">
-    <mat-drawer #drawer [mode]="'over'" [(opened)]="toggle">
+<app-toolbar [titleAlias]="titleAlias"></app-toolbar>
+<mat-drawer-container class="example-container" [hasBackdrop]="hasBackground">
+    <mat-drawer #drawer [mode]="drawerStates" [(opened)]="toggle">
         <mat-nav-list role="list">
-            <mat-list-item role="listitem" [routerLink]="['/home']" (click)="toggle = !toggle">
+            <mat-list-item role="listitem" [routerLink]="['/home']" (click)="onDrawerItemClick()">
                 <mat-icon color="primary">view_stream</mat-icon>
                 <span>Memo Cards</span>
             </mat-list-item>
-            <mat-list-item role="listitem" [routerLink]="['/conspects-list']" (click)="toggle = !toggle">
+            <mat-list-item role="listitem" [routerLink]="['/conspects-list']" (click)="onDrawerItemClick()">
                 <mat-icon color="primary">receipt</mat-icon>
                 <span>Conspects</span>
             </mat-list-item>
@@ -15,7 +15,7 @@
     </mat-drawer>
     <mat-drawer-content>
         <div class="router-outlet--wrap">
-            <router-outlet></router-outlet>
+            <router-outlet (activate)="setHeader()"></router-outlet>
         </div>
     </mat-drawer-content>
 </mat-drawer-container>

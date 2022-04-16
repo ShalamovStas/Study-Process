@@ -1,16 +1,27 @@
 <p>
     <mat-toolbar color="primary" class="mat-elevation-z6">
-        <!-- <button *ngIf="toolbarIcon === toolbarIcons.BackBtn" mat-icon-button class="example-icon"
-            aria-label="Example icon-button with menu icon" (click)="onBackClick()">
-            <mat-icon>arrow_back</mat-icon>
-        </button> -->
-
-        <button mat-icon-button class="example-icon"
-            aria-label="Example icon-button with menu icon" (click)="onMenuToggle()">
-            <mat-icon>menu</mat-icon>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+            (click)="onMenuToggle()">
+            <mat-icon class="rotate" [class.down]="toggle" [class.up]="!toggle">menu</mat-icon>
         </button>
 
-        <span style="margin-left: 15px;">MemoCards</span>
+        <ul class="breadcrumb breadcrumb--classic">
+            <li>
+                <a class="d-flex align-items-center" routerLink="/home">
+                    <!-- <mat-icon>home</mat-icon> -->
+                    <span class="ml-10">My resources</span>
+                </a>
+            </li>
+            <li *ngFor="let item of actionBarPath">
+                <a *ngIf="item.link" [routerLink]="item.link">
+                    {{item.title}}
+                </a>
+                <a *ngIf="!item.link">
+                    {{item.title}}
+                </a>
+            </li>
+        </ul>
+
         <span class="spacer"></span>
         <button mat-icon-button class="example-icon favorite-icon" [matMenuTriggerFor]="menu"
             *ngIf="toolbarIcon === toolbarIcons.Menu">

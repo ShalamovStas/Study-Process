@@ -23,7 +23,6 @@ export class Element100vhComponent implements OnInit {
   }
 
   fillAvailableSpaceByHeight() {
-    console.log("BodyHeightComponent");
   }
 
 }

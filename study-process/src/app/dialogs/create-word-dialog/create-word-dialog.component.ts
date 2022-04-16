@@ -28,11 +28,6 @@ export class CreateWordDialogComponent {
   }
 
   keyUp(event: any) {
-    console.log(event)
-  }
-
-  @HostListener('window:keyup.esc') onKeyUp() {
-    this.dialogRef.close();
   }
 
 }

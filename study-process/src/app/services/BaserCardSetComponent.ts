@@ -23,7 +23,7 @@ export class BaseCardSetComponent {
           return;
         }
 
-        let cachedCardSetList = AppHelper.getLocalStorageCardSetList();
+        let cachedCardSetList = AppHelper.getCachedCardSetList();
         if (!cachedCardSetList) {
           this.routeToHome();
           return;

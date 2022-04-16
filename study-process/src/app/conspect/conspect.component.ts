@@ -69,7 +69,7 @@ export class ConspectComponent implements OnInit, OnDestroy {
         return;
       }
 
-      let thisConspect = cached.item.find(x => x.id === id);
+      let thisConspect = cached.result.find(x => x.id === id);
 
       if (!thisConspect) {
         this.router.navigate(['/conspects-list']);
@@ -145,7 +145,6 @@ export class ConspectComponent implements OnInit, OnDestroy {
       return;
 
     let splittedConspect = this.conspect.html.split("<h1>");
-    console.log(splittedConspect);
 
     this.learnConspectModel = new LearnConspectModel();
 
@@ -164,7 +163,6 @@ export class ConspectComponent implements OnInit, OnDestroy {
 
     this.learnConspectModel.Length = this.learnConspectModel.sections.length;
     this.stepperService.init(this.learnConspectModel.sections);
-    console.log(this.learnConspectModel);
   }
 
   disableLearnConspect() {

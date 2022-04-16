@@ -31,7 +31,7 @@ export class MemoCardSetComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= this.breakPointWindowWidth) ? 1 : 2;
   }
 
-  @HostListener('document:keypress', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === "+" && this.dialog.openDialogs.length === 0) {
       this.openDialogCreate();
@@ -47,7 +47,7 @@ export class MemoCardSetComponent implements OnInit {
         return;
       }
 
-      let cachedCardSetList = AppHelper.getLocalStorageCardSetList();
+      let cachedCardSetList = AppHelper.getCachedCardSetList();
       if (!cachedCardSetList) {
         this.routeToHome();
         return;
@@ -57,7 +57,6 @@ export class MemoCardSetComponent implements OnInit {
 
       if (thisCardSet) {
         this.cardSet = thisCardSet
-        console.log(thisCardSet);
       }
       else
         this.routeToHome();
@@ -94,8 +93,6 @@ export class MemoCardSetComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
       if (!result)
         return;
 
@@ -158,7 +155,6 @@ export class MemoCardSetComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.cardSet.items, event.previousIndex, event.currentIndex);
 
-    console.log("drop")
     this.db.updateCardItemsById(this.cardSet).then(() => { });
     AppHelper.updateCachedCardSet(this.cardSet);
   }

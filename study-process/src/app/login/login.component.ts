@@ -47,12 +47,8 @@ export class LoginComponent implements OnInit {
           return;
         }
 
-        console.log(response)
         localStorage.setItem('user', JSON.stringify(response));
         this.router.navigate(['home']);
-
-        // console.log("Document data:", docSnap.data())
-
       })
     }
   }

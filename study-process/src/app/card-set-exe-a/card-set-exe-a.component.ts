@@ -24,11 +24,8 @@ export class CardSetExeAComponent extends BaseCardSetComponent implements OnInit
 
   ngOnInit(): void {
     this.onCardSetInitBase().then(() => {
-      console.log("resolved")
-
       this.stepper = new StepperServiceExeA(this.cardSet.items.filter(x => x.inUse))
     }, error => {
-      console.log("decline")
     });
   }
 

@@ -5,7 +5,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, HostListener, Injector, OnInit } from '@angular/core';
 import { CardModel, CardSet } from '../models/Card';
 import { BaseCardSetComponent } from '../services/BaserCardSetComponent';
 import { StepperService } from '../services/StepperService';
@@ -37,13 +37,19 @@ export class CardSetReviewComponent extends BaseCardSetComponent implements OnIn
     super(injector);
   }
 
+  @HostListener('window:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === "ArrowRight") {
+      this.stepperService.getNextStep();
+    } else if(event.key === "ArrowLeft"){
+      this.stepperService.getPreviousStep();
+    }
+  }
+
   ngOnInit(): void {
     this.onCardSetInitBase().then(() => {
-      console.log("resolved")
-
       this.stepperService.init(this.cardSet.items.filter(x => x.inUse));
     }, error => {
-      console.log("decline")
     });
   }
 

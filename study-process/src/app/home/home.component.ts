@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CreateMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 import { DeleteMemoCardDialogComponent } from './dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
@@ -27,9 +27,23 @@ export class HomeComponent implements OnInit {
   state: any;
 
   constructor(private router: Router, private db: FirebaseDataProviderService,
-    public dialog: MatDialog, private _snackBar: MatSnackBar, private stateService: StateService) { }
+    public dialog: MatDialog, private _snackBar: MatSnackBar, private stateService: StateService,
+    private activateRoute: ActivatedRoute) { }
+
+
+  changeQuery(tag: any) {
+    this.router.navigate([], { relativeTo: this.activateRoute, queryParams: { tag: tag } });
+  }
 
   ngOnInit(): void {
+    let activateRouteSubscription = this.activateRoute.queryParams.subscribe(params => {
+      let tag = params["tag"];
+      if (tag) {
+        this.currentTab = tag;
+      }
+    });
+    activateRouteSubscription?.unsubscribe();
+
     this.handleTabState();
 
     let stringUser = localStorage.getItem('user');
@@ -47,7 +61,6 @@ export class HomeComponent implements OnInit {
 
   handleTabState() {
     this.state = this.stateService.state$.getValue() || {};
-    console.log(this.state);
 
     if (this.state && this.state.currentTab)
       this.currentTab = this.state.currentTab;
@@ -60,9 +73,6 @@ export class HomeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(newCardSet => {
-      console.log('The dialog was closed');
-      console.log(newCardSet);
-
       if (newCardSet)
         this.createNewSet(newCardSet);
     });
@@ -73,7 +83,6 @@ export class HomeComponent implements OnInit {
       return;
 
     let currentCardModel = JSON.parse(JSON.stringify(card));
-    console.log(currentCardModel)
 
     const dialogRef = this.dialog.open(CreateMemoCardDialogComponent, {
       maxWidth: '60vw',
@@ -113,24 +122,12 @@ export class HomeComponent implements OnInit {
   }
 
   getData() {
-    let cachedCardSetList = AppHelper.getLocalStorageCardSetList();
-
-    if (!cachedCardSetList) {
-      console.log("Response to firebase");
-      this.db.getMemoCardsByUserName(this.user.id).then(response => {
-        console.log("Firebase response");
-        console.log(response);
-        this.memoCards = response;
-        this.filterSetsByCategories();
-
-        AppHelper.setCacheCardSetList(response);
-      });
-      return;
-    } else {
-      console.log("Cards from cache");
-      this.memoCards = cachedCardSetList;
+    this.db.getMemoCardsByUserName(this.user.id).then(response => {
+      this.memoCards = response;
       this.filterSetsByCategories();
-    }
+
+      AppHelper.setCacheCardSetList(response);
+    });
   }
 
   filterSetsByCategories() {
@@ -161,8 +158,6 @@ export class HomeComponent implements OnInit {
   deleteItem(id: string) {
     if (!id)
       return;
-    console.log("Delete")
-    console.log(id);
 
     this.db.deleteMemoCardById(id).then(() => {
       this.getData();
@@ -173,13 +168,12 @@ export class HomeComponent implements OnInit {
   openDeck(card: CardSet) {
     this.state.currentTab = this.currentTab;
     this.stateService.state$.next(this.state);
-
-    console.log("open deck");
     this.router.navigate(['/memoCard', card.id]);
   }
 
   onTabChange(event: any) {
     this.currentTab = event.index
+    this.changeQuery(this.currentTab);
   }
 
 }

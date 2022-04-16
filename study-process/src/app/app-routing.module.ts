@@ -11,11 +11,12 @@ import { ConspectComponent } from './conspect/conspect.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'memoCard/:id', component: MemoCardSetComponent},
-  {path: 'cardSetReview/:id', component: CardSetReviewComponent},
-  {path: 'cardSetExeA/:id', component: CardSetExeAComponent},
-  {path: 'conspects-list', component: ConspectsListComponent},
-  {path: 'conspect/:id', component: ConspectComponent},
+  {path: 'memoCard/:id', component: MemoCardSetComponent, canActivate: [AuthGuard]},
+  {path: 'cardSetReview/:id', component: CardSetReviewComponent, canActivate: [AuthGuard]},
+  {path: 'cardSetExeA/:id', component: CardSetExeAComponent, canActivate: [AuthGuard]},
+  {path: 'conspects-list', component: ConspectsListComponent, canActivate: [AuthGuard]},
+  {path: 'conspect/:id', component: ConspectComponent, canActivate: [AuthGuard]},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: '**', component: HomeComponent, canActivate: [AuthGuard]},
 ];
 

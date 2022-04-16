@@ -28,7 +28,6 @@ export class ImportDialogComponent {
     }
 
     let newCardSet = this.importService.parseCardSet(this.model);
-    console.log(newCardSet);
 
     if (newCardSet) {
       this.db.createNewSet(newCardSet).then(x => {

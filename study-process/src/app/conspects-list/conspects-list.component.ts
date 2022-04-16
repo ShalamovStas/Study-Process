@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Console } from 'console';
 import { idToken } from 'rxfire/auth';
 import { CreateConspectDialogComponent } from '../dialogs/create-conspect-dialog/create-conspect-dialog.component';
@@ -34,7 +34,7 @@ export class ConspectsListComponent implements OnInit {
       this.mapTags(x.map(x => x.tag));
 
       this.conspects = x;
-      AppHelper.setCachedConspects(this.conspects);
+      //AppHelper.setCachedConspects(this.conspects);
     });
   }
 
@@ -119,8 +119,6 @@ export class ConspectsListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(model => {
-      console.log('The dialog was closed');
-      console.log(model);
 
       if (!model)
         return;

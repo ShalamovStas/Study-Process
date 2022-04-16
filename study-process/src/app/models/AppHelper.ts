@@ -6,9 +6,10 @@ import { User } from "./User";
 
 export class AppHelper {
     public static readonly conspectsKey = "conspects";
+    public static windowWidthPoint = 1200;
 
     public static updateCachedCardSet(cardSet: CardSet) {
-        let cachedCardSetList = this.getLocalStorageCardSetList();
+        let cachedCardSetList = this.getCachedCardSetList();
 
         for (let index = 0; index < cachedCardSetList.length; index++) {
             if (cachedCardSetList[index].id == cardSet.id) {
@@ -19,7 +20,7 @@ export class AppHelper {
         }
     }
 
-    public static getLocalStorageCardSetList(): Array<CardSet> {
+    public static getCachedCardSetList(): Array<CardSet> {
         let cardSetList;
         let cachedCards = localStorage.getItem("memoCardSets");
 
@@ -38,10 +39,10 @@ export class AppHelper {
         if (!cached.success)
             throw "No cached data";
 
-        for (let index = 0; index < cached.item.length; index++) {
-            if (cached.item[index].id == conspect.id) {
-                cached.item[index] = conspect;
-                this.setCachedConspects(cached.item);
+        for (let index = 0; index < cached.result.length; index++) {
+            if (cached.result[index].id == conspect.id) {
+                cached.result[index] = conspect;
+                this.setCachedConspects(cached.result);
                 return;
             }
         }
@@ -53,7 +54,7 @@ export class AppHelper {
         let cachedConspectList = localStorage.getItem(AppHelper.conspectsKey);
 
         if (cachedConspectList) {
-            operation.item = JSON.parse(cachedConspectList);
+            operation.result = JSON.parse(cachedConspectList);
             operation.success = true;
         }
 
@@ -86,8 +87,6 @@ export class AppHelper {
         }
 
         db.getMemoCardsByUserName(user?.id).then(response => {
-            console.log("Firebase response");
-            console.log(response);
             AppHelper.setCacheCardSetList(response);
             location.reload();
         });
@@ -102,4 +101,8 @@ export class AppHelper {
         let model = (JSON.parse(modelInLocalStorage) as User);
         return model;
     }
+
+    static get isDesktop(): boolean{
+        return window.innerWidth >= AppHelper.windowWidthPoint;
+      }
 }
