@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AppHelper } from './models/AppHelper';
@@ -18,21 +18,31 @@ export class AppComponent implements OnInit {
   drawerStates: "side" | "over" = "over";
   hasBackground: boolean = true;
 
-  constructor(private eventService: EventService, private route: Router) {
+  hasAccount: boolean = false;
+
+  constructor(private eventService: EventService, private router: Router, private activateRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+
+    if (!AppHelper.currentUser) {
+      this.hasAccount = false;
+      return;
+    }
+
+    this.hasAccount = true;
 
     this.eventService.on(EventNames.onDrawerOpenIntent)
       .subscribe(model => {
         this.toggle = !this.toggle;
       });
 
-    this.handleDrawer(window.innerWidth);
+    if (AppHelper)
+      this.handleDrawer(window.innerWidth);
   }
 
   setHeader() {
-    let path = this.route.url.split('/')[1];
+    let path = this.router.url.split('/')[1];
     this.titleAlias = decodeURIComponent(path);
   }
 
@@ -48,7 +58,6 @@ export class AppComponent implements OnInit {
       this.drawerStates = 'over';
       this.hasBackground = true;
       this.toggle = false;
-
     }
   }
 

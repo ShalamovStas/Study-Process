@@ -1,7 +1,16 @@
 <h1 class="title">My MemoCard Sets</h1>
 
-<!-- TODO : need refactoring -->
-<mat-tab-group mat-align-tabs="center" animationDuration="0ms" [selectedIndex]="currentTab" (selectedTabChange)="onTabChange($event)">
+<mat-form-field appearance="standard" >
+    <mat-select [(value)]="selected" (valueChange)='onOptionsSelected(selected)'>
+        <mat-option *ngFor="let item of dropdownValues" [value]="item.id">
+            {{item.viewValue}}
+        </mat-option>
+    </mat-select>
+    <mat-hint>Select the category</mat-hint>
+</mat-form-field>
+
+<mat-tab-group mat-stretch-tabs mat-align-tabs="center" animationDuration="0ms" [selectedIndex]="currentTab"
+    (selectedTabChange)="onTabChange($event)">
     <mat-tab label="Heap">
 
         <div class="container mt-4">
@@ -136,7 +145,7 @@
                 </div>
             </div>
         </div>
-        
+
     </mat-tab>
 </mat-tab-group>
 

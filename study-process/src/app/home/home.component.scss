@@ -51,3 +51,19 @@
   z-index: 100;
 }
 
+::ng-deep .mat-tab-header-pagination {
+  display: none !important;
+} 
+
+::ng-deep .mat-tab-label-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  z-index: 1;
+  overflow-x: scroll !important;
+}
+
+.scrollbar::-webkit-scrollbar {
+  background-color:#fff;
+  width:16px
+}

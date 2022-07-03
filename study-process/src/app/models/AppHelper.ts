@@ -96,7 +96,7 @@ export class AppHelper {
         let modelInLocalStorage = localStorage.getItem('user');
 
         if (!modelInLocalStorage)
-            throw "User not found!";
+            return new User();
 
         let model = (JSON.parse(modelInLocalStorage) as User);
         return model;

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
@@ -14,7 +14,7 @@ import { AppHelper } from '../models/AppHelper';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   user: any;
   memoCards: Array<CardSet> = [];
 
@@ -26,20 +26,27 @@ export class HomeComponent implements OnInit {
   currentTab: number = 0;
   state: any;
 
+  dropdownValues: { id: number, viewValue: string }[] = [];
+  selected: any;
+
   constructor(private router: Router, private db: FirebaseDataProviderService,
     public dialog: MatDialog, private _snackBar: MatSnackBar, private stateService: StateService,
     private activateRoute: ActivatedRoute) { }
 
-
-  changeQuery(tag: any) {
-    this.router.navigate([], { relativeTo: this.activateRoute, queryParams: { tag: tag } });
-  }
-
   ngOnInit(): void {
+
+    this.dropdownValues = [
+      { id: 0, viewValue: 'Heap' },
+      { id: 1, viewValue: 'English' },
+      { id: 2, viewValue: 'Programming' },
+      { id: 3, viewValue: 'Other' },
+    ];
+
     let activateRouteSubscription = this.activateRoute.queryParams.subscribe(params => {
       let tag = params["tag"];
       if (tag) {
-        this.currentTab = tag;
+        this.currentTab = parseInt(tag);
+        this.selected = this.dropdownValues.find(x => { return x.id === this.currentTab })?.id;
       }
     });
     activateRouteSubscription?.unsubscribe();
@@ -57,6 +64,38 @@ export class HomeComponent implements OnInit {
     }
 
     this.getData();
+  }
+
+  ngAfterViewInit(): void {
+    this.handleNavElements();
+  }
+
+  handleNavElements() {
+    if (AppHelper.isDesktop) {
+      this.setDisplayNoneByByTagName("mat-form-field");
+    } else {
+      this.setDisplayNoneByByTagName("mat-tab-header");
+    }
+  }
+
+  setDisplayNoneByByTagName(tagName: string) {
+    const el = ((document.getElementsByTagName(tagName)[0]) as HTMLElement);
+
+    console.log(el)
+    if (!el)
+      return;
+
+    el.style.display = "none";
+  }
+
+  onOptionsSelected(value: any) {
+    console.log(value);
+    this.currentTab = value;
+  }
+
+
+  changeQuery(tag: any) {
+    this.router.navigate([], { relativeTo: this.activateRoute, queryParams: { tag: tag } });
   }
 
   handleTabState() {
@@ -174,6 +213,7 @@ export class HomeComponent implements OnInit {
   onTabChange(event: any) {
     this.currentTab = event.index
     this.changeQuery(this.currentTab);
+    this.selected = this.dropdownValues.find(x => { return x.id === this.currentTab })?.id;
   }
 
 }
