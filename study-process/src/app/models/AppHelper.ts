@@ -1,6 +1,6 @@
 import { FirebaseDataProviderService } from "../services/firebaseDataProvider.service";
 import { OperationResult } from "./Base";
-import { CardSet } from "./Card";
+import { MemoCard } from "./Card";
 import { Conspect } from "./Conspect";
 import { User } from "./User";
 
@@ -8,7 +8,7 @@ export class AppHelper {
     public static readonly conspectsKey = "conspects";
     public static windowWidthPoint = 1200;
 
-    public static updateCachedCardSet(cardSet: CardSet) {
+    public static updateCachedCardSet(cardSet: MemoCard) {
         let cachedCardSetList = this.getCachedCardSetList();
 
         for (let index = 0; index < cachedCardSetList.length; index++) {
@@ -20,9 +20,9 @@ export class AppHelper {
         }
     }
 
-    public static getCachedCardSetList(): Array<CardSet> {
+    public static getCachedCardSetList(): Array<MemoCard> {
         let cardSetList;
-        let cachedCards = localStorage.getItem("memoCardSets");
+        let cachedCards = localStorage.getItem("memoCards");
 
         if (cachedCards)
             cardSetList = JSON.parse(cachedCards);
@@ -30,8 +30,22 @@ export class AppHelper {
         return cardSetList;
     }
 
-    public static setCacheCardSetList(array: Array<CardSet>) {
-        localStorage.setItem("memoCardSets", JSON.stringify(array));
+    public static setCacheCardSetList(array: Array<MemoCard>) {
+        localStorage.setItem("memoCards", JSON.stringify(array));
+    }
+
+    public static setCache(object: any, key: string) {
+        localStorage.setItem(key, JSON.stringify(object));
+    }
+
+    public static getCache(key: string): any {
+        let result;
+        let cached = localStorage.getItem(key);
+
+        if (cached)
+            result = JSON.parse(cached);
+
+        return result;
     }
 
     public static updateCachedConspect(conspect: Conspect) {
@@ -77,21 +91,6 @@ export class AppHelper {
         return result;
     }
 
-    public static syncData(db: FirebaseDataProviderService) {
-        let user = AppHelper.currentUser;
-
-        if (!user) {
-            localStorage.removeItem('user');
-            location.reload;
-            return;
-        }
-
-        db.getMemoCardsByUserName(user?.id).then(response => {
-            AppHelper.setCacheCardSetList(response);
-            location.reload();
-        });
-    }
-
     public static get currentUser(): User {
         let modelInLocalStorage = localStorage.getItem('user');
 
@@ -102,7 +101,7 @@ export class AppHelper {
         return model;
     }
 
-    static get isDesktop(): boolean{
+    static get isDesktop(): boolean {
         return window.innerWidth >= AppHelper.windowWidthPoint;
-      }
+    }
 }

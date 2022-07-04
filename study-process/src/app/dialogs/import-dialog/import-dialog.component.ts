@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CardModel } from 'src/app/models/Card';
+import { LearnModel } from 'src/app/models/Card';
 import { FirebaseDataProviderService } from 'src/app/services/firebaseDataProvider.service';
 import { CardSetImportModel, ImportCardSetService } from 'src/app/services/importCardSetService';
 
@@ -30,7 +30,7 @@ export class ImportDialogComponent {
     let newCardSet = this.importService.parseCardSet(this.model);
 
     if (newCardSet) {
-      this.db.createNewSet(newCardSet).then(x => {
+      this.db.createNewMemoCard(newCardSet).then(x => {
         this.dialogRef.close(this.model);
       });
     }

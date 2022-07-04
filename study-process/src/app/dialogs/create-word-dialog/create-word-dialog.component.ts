@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CardModel } from 'src/app/models/Card';
+import { LearnModel } from 'src/app/models/Card';
 
 @Component({
   selector: 'app-create-word-card-dialog',
@@ -11,7 +11,7 @@ export class CreateWordDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CreateWordDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public cardModel: CardModel) {
+    @Inject(MAT_DIALOG_DATA) public cardModel: LearnModel) {
     dialogRef.disableClose = true;
   }
 

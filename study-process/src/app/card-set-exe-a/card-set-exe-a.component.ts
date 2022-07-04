@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { CardModel } from '../models/Card';
+import { LearnModel } from '../models/Card';
 import { BaseCardSetComponent } from '../services/BaserCardSetComponent';
 import { LearnCardMode, MemoCardState, StepperService, StepperServiceExeA } from '../services/StepperService';
 import { BottomMenuSelectModeComponent } from './bottom-sheet/bottom-menu-select-mode/bottom-menu-select-mode.component';

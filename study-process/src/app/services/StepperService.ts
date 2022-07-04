@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { runInThisContext } from "vm";
-import { CardModel } from "../models/Card";
+import { LearnModel } from "../models/Card";
 
 @Injectable()
 export class StepperService<T> {
@@ -56,7 +56,7 @@ export class CardFrontBackStepper {
     private currentCardSide = MemoCardState.Front;
     private _learnMode = LearnCardMode.Normal;
 
-    private currentCard: CardModel = new CardModel();
+    private currentCard: LearnModel = new LearnModel();
 
     get learnMode() {
         return this._learnMode;
@@ -68,7 +68,7 @@ export class CardFrontBackStepper {
         this.initNextCard(this.currentCard);
     }
 
-    public initNextCard(model: CardModel) {
+    public initNextCard(model: LearnModel) {
         this.currentCard = model;
         if (this._learnMode === LearnCardMode.Normal) {
             this.currentCardSide = MemoCardState.Front;
@@ -113,13 +113,13 @@ export class CardFrontBackStepper {
 }
 
 export class StepperServiceExeA {
-    private currentCard: CardModel = new CardModel();
+    private currentCard: LearnModel = new LearnModel();
 
     public lastIndex: number = 0;
 
     private сardFrontBackStepper: CardFrontBackStepper = new CardFrontBackStepper()
 
-    constructor(private items: Array<CardModel>) {
+    constructor(private items: Array<LearnModel>) {
         this.currentCard = items[0];
         this.initCardStepperByCurrentCard();
         this.next;

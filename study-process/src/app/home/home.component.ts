@@ -1,13 +1,19 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateMemoCardDialogComponent } from './dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 import { DeleteMemoCardDialogComponent } from './dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
-import { CardSet, Category } from '../models/Card';
+import { MemoCard, DefaultCategoryService, MemoCardCategory } from '../models/Card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StateService } from '../services/StateService';
 import { AppHelper } from '../models/AppHelper';
+import { forkJoin } from 'rxjs';
+import { FirebaseCollectionKeys } from '../models/AppConstants';
+import { Mapper } from '../models/Mapper';
+import { CreateMemoCardDialogModel, MemoCardCategoryDialogModel } from '../models/Base';
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
+import { MemoCardCategoryDialogComponent } from './dialogs/memo-card-category-dialog/memo-card-category-dialog';
 
 @Component({
   selector: 'app-home',
@@ -16,42 +22,45 @@ import { AppHelper } from '../models/AppHelper';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   user: any;
-  memoCards: Array<CardSet> = [];
+  memoCards: Array<MemoCard> = [];
 
-  memoCardsHeap: Array<CardSet> = [];
-  memoCardsEnglish: Array<CardSet> = [];
-  memoCardsProgramming: Array<CardSet> = [];
-  memoCardsOther: Array<CardSet> = [];
+  memoCardsHeap: Array<MemoCard> = [];
+  memoCardsEnglish: Array<MemoCard> = [];
+  memoCardsProgramming: Array<MemoCard> = [];
+  memoCardsOther: Array<MemoCard> = [];
 
-  currentTab: number = 0;
   state: any;
 
-  dropdownValues: { id: number, viewValue: string }[] = [];
+  memoCardCategories: MemoCardCategory[] = [];
   selected: any;
+
+  selectedCards: any[] = [];
+  categoryIdFromUrl: string | undefined;
+  selectedCategory: MemoCardCategory | undefined;
+  defaultCategory: MemoCardCategory | undefined;
 
   constructor(private router: Router, private db: FirebaseDataProviderService,
     public dialog: MatDialog, private _snackBar: MatSnackBar, private stateService: StateService,
     private activateRoute: ActivatedRoute) { }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    this.onBackToCategories();
+  }
+
   ngOnInit(): void {
-
-    this.dropdownValues = [
-      { id: 0, viewValue: 'Heap' },
-      { id: 1, viewValue: 'English' },
-      { id: 2, viewValue: 'Programming' },
-      { id: 3, viewValue: 'Other' },
-    ];
-
     let activateRouteSubscription = this.activateRoute.queryParams.subscribe(params => {
-      let tag = params["tag"];
-      if (tag) {
-        this.currentTab = parseInt(tag);
-        this.selected = this.dropdownValues.find(x => { return x.id === this.currentTab })?.id;
+      let categoryUrl = params["category"];
+
+      if (categoryUrl !== undefined) {
+        this.categoryIdFromUrl = categoryUrl;
+      } else {
+        this.onBackToCategories();
       }
     });
     activateRouteSubscription?.unsubscribe();
 
-    this.handleTabState();
+    this.handleCategorySelect();
 
     let stringUser = localStorage.getItem('user');
     if (stringUser)
@@ -67,53 +76,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.handleNavElements();
   }
 
-  handleNavElements() {
-    if (AppHelper.isDesktop) {
-      this.setDisplayNoneByByTagName("mat-form-field");
-    } else {
-      this.setDisplayNoneByByTagName("mat-tab-header");
-    }
+  changeQuery(categoryId: any) {
+    this.router.navigate([], { relativeTo: this.activateRoute, queryParams: { category: categoryId } });
   }
 
-  setDisplayNoneByByTagName(tagName: string) {
-    const el = ((document.getElementsByTagName(tagName)[0]) as HTMLElement);
-
-    console.log(el)
-    if (!el)
-      return;
-
-    el.style.display = "none";
-  }
-
-  onOptionsSelected(value: any) {
-    console.log(value);
-    this.currentTab = value;
-  }
-
-
-  changeQuery(tag: any) {
-    this.router.navigate([], { relativeTo: this.activateRoute, queryParams: { tag: tag } });
-  }
-
-  handleTabState() {
+  handleCategorySelect() {
     this.state = this.stateService.state$.getValue() || {};
 
-    if (this.state && this.state.currentTab)
-      this.currentTab = this.state.currentTab;
+    if (this.state && this.state.currentCategory)
+      this.selectedCategory = this.state.currentCategory;
   }
 
   openDialog(): void {
+    const data: CreateMemoCardDialogModel = new CreateMemoCardDialogModel();
+    data.dialogTitle = "Create new deck";
+    data.saveBtnText = "Create";
+    data.categories = this.memoCardCategories;
+
     const dialogRef = this.dialog.open(CreateMemoCardDialogComponent, {
       maxWidth: '60vw',
-      data: new CardSet(),
+      data: data,
+      scrollStrategy: new NoopScrollStrategy()
     });
 
     dialogRef.afterClosed().subscribe(newCardSet => {
       if (newCardSet)
-        this.createNewSet(newCardSet);
+        this.createNewMemoCard(newCardSet);
     });
   }
 
@@ -123,20 +113,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let currentCardModel = JSON.parse(JSON.stringify(card));
 
+    const data: CreateMemoCardDialogModel = new CreateMemoCardDialogModel();
+    data.deck = currentCardModel;
+    data.dialogTitle = "Edit deck";
+    data.saveBtnText = "Save";
+    data.categories = this.memoCardCategories;
+
     const dialogRef = this.dialog.open(CreateMemoCardDialogComponent, {
       maxWidth: '60vw',
-      data: currentCardModel,
+      data: data,
+      scrollStrategy: new NoopScrollStrategy()
     });
 
-    dialogRef.afterClosed().subscribe(newCard => {
-      if (!newCard)
+    dialogRef.afterClosed().subscribe(memoCard => {
+      if (!memoCard)
         return;
 
-      this.db.updateCardSet(newCard).then(() => {
+      this.db.updateMemoCard(memoCard).then(() => {
         for (let index = 0; index < this.memoCards.length; index++) {
-          if (this.memoCards[index].id == newCard.id) {
-            this.memoCards[index] = newCard;
-            this.filterSetsByCategories();
+          if (this.memoCards[index].id == memoCard.id) {
+            this.memoCards[index] = memoCard;
+
+            this.onCategorySelect(this.selectedCategory);
             return;
           }
         }
@@ -144,10 +142,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  createNewSet(model: CardSet) {
+  createNewMemoCard(model: MemoCard) {
     model.userId = this.user.id;
 
-    this.db.createNewSet(model);
+    this.db.createNewMemoCard(model);
 
     setTimeout(() => {
       this.getData();
@@ -161,19 +159,42 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   getData() {
-    this.db.getMemoCardsByUserName(this.user.id).then(response => {
-      this.memoCards = response;
-      this.filterSetsByCategories();
+    const promises = forkJoin(
+      [
+        this.db.getItemsByUserName(this.user.id, FirebaseCollectionKeys.MemoCardsCategories, Mapper.mapMemoCardCategories),
+        this.db.getItemsByUserName(this.user.id, FirebaseCollectionKeys.MemoCards, Mapper.mapMemoCardModel),
+      ]
+    ).subscribe((resultArray) => {
+      console.log(resultArray);
+      this.memoCardCategories = resultArray[0] as MemoCardCategory[];
 
-      AppHelper.setCacheCardSetList(response);
+      this.defaultCategory = DefaultCategoryService.getDefaultCategory();
+
+      this.memoCards = resultArray[1] as MemoCard[];
+
+      if (this.categoryIdFromUrl) {
+        if (this.categoryIdFromUrl === this.defaultCategory.id) {
+          this.onCategorySelect(this.defaultCategory);
+        }
+        else {
+          let categoryByUrl = this.memoCardCategories.find(x => { return x.id === this.categoryIdFromUrl });
+
+          if (categoryByUrl)
+            this.onCategorySelect(categoryByUrl);
+          else
+            this.changeQuery(undefined);
+        }
+      }
+
+      AppHelper.setCache(this.memoCardCategories, FirebaseCollectionKeys.MemoCardsCategories);
+      AppHelper.setCache(this.memoCards, FirebaseCollectionKeys.MemoCards);
     });
-  }
 
-  filterSetsByCategories() {
-    this.memoCardsHeap = this.memoCards.filter(x => x.category === Category.Heap || !x.category);
-    this.memoCardsEnglish = this.memoCards.filter(x => x.category === Category.English);
-    this.memoCardsProgramming = this.memoCards.filter(x => x.category === Category.Programming);
-    this.memoCardsOther = this.memoCards.filter(x => x.category === Category.Other);
+    // this.db.getMemoCardsByUserName(this.user.id).then(response => {
+    //   this.memoCards = response;
+
+    //   AppHelper.setCacheCardSetList(response);
+    // });
   }
 
   onEvent(event: any) {
@@ -200,20 +221,116 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.db.deleteMemoCardById(id).then(() => {
       this.getData();
-      AppHelper.syncData(this.db);
     });
   }
 
-  openDeck(card: CardSet) {
-    this.state.currentTab = this.currentTab;
+  openDeck(card: MemoCard) {
+    this.state.currentCategory = this.selectedCategory;
     this.stateService.state$.next(this.state);
     this.router.navigate(['/memoCard', card.id]);
   }
 
-  onTabChange(event: any) {
-    this.currentTab = event.index
-    this.changeQuery(this.currentTab);
-    this.selected = this.dropdownValues.find(x => { return x.id === this.currentTab })?.id;
+  onCategorySelect(category: MemoCardCategory | undefined) {
+    if (!category)
+      return;
+
+    this.selectedCategory = category;
+    this.changeQuery(category.id);
+
+    if (category.id === this.defaultCategory?.id) {
+      this.selectedCards = this.memoCards.filter(x => x.categoryId === undefined);
+
+      return;
+    }
+
+    this.selectedCards = this.memoCards.filter(x => x.categoryId === category.id);
   }
 
+  onBackToCategories() {
+    this.selectedCards = [];
+    this.selectedCategory = undefined;
+    this.changeQuery(undefined);
+  }
+
+  onAddNewCategory() {
+    const data: MemoCardCategoryDialogModel = new MemoCardCategoryDialogModel();
+    data.dialogTitle = "Create new category";
+    data.saveBtnText = "Create";
+    data.categories = this.memoCardCategories;
+
+    const dialogRef = this.dialog.open(MemoCardCategoryDialogComponent, {
+      maxWidth: '60vw',
+      data: data,
+      scrollStrategy: new NoopScrollStrategy()
+    });
+
+    dialogRef.afterClosed().subscribe(newCategory => {
+      if (newCategory) {
+        newCategory.userId = this.user.id;
+
+        this._snackBar.open(`Saving ...`);
+        this.db.createItem(newCategory, FirebaseCollectionKeys.MemoCardsCategories).then(x => {
+          this._snackBar.dismiss();
+          this.getData();
+        });
+      }
+
+    });
+  }
+
+  openEditCategory(category: MemoCardCategory | undefined) {
+    let currentModel = JSON.parse(JSON.stringify(category));
+
+    const data: MemoCardCategoryDialogModel = new MemoCardCategoryDialogModel();
+    data.dialogTitle = "Edit the category";
+    data.saveBtnText = "Save";
+    data.categories = this.memoCardCategories.filter(x => {return x.id !== category?.id});
+    data.category = currentModel;
+
+    const dialogRef = this.dialog.open(MemoCardCategoryDialogComponent, {
+      maxWidth: '60vw',
+      data: data,
+      scrollStrategy: new NoopScrollStrategy()
+    });
+
+    dialogRef.afterClosed().subscribe(category => {
+      if (category) {
+        category.userId = this.user.id;
+
+        this._snackBar.open(`Saving ...`);
+        this.db.updateItem(category, FirebaseCollectionKeys.MemoCardsCategories).then(x => {
+          this.getData();
+          this._snackBar.dismiss();
+        });
+      }
+
+    });
+  }
+
+  openDeleteCategoryDialog(id: string) {
+    let memoCards = this.memoCards.filter(x => x.categoryId === id);
+
+    if (memoCards && memoCards.length !== 0) {
+      this._snackBar.open(`Can not be deleted`, "Ok");
+      return;
+    }
+
+    const dialogRef = this.dialog.open(DeleteMemoCardDialogComponent, {
+      maxWidth: '60vw',
+      data: { id: id },
+    });
+
+    dialogRef.afterClosed().subscribe(model => {
+      if (!model || !model.id)
+        return;
+
+      this._snackBar.open(`Deleting ...`);
+      this.db.deleteItemById(id, FirebaseCollectionKeys.MemoCardsCategories).then(() => {
+
+
+        this.getData();
+        this._snackBar.dismiss();
+      });
+    });
+  }
 }

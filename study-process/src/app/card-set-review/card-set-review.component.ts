@@ -6,7 +6,7 @@ import {
   transition
 } from '@angular/animations';
 import { Component, HostListener, Injector, OnInit } from '@angular/core';
-import { CardModel, CardSet } from '../models/Card';
+import { LearnModel, MemoCard } from '../models/Card';
 import { BaseCardSetComponent } from '../services/BaserCardSetComponent';
 import { StepperService } from '../services/StepperService';
 
@@ -33,7 +33,7 @@ export const fadeInOut = (name = 'fadeInOut', duration = 0.1) =>
 export class CardSetReviewComponent extends BaseCardSetComponent implements OnInit {
 
   radius: number = 15;
-  constructor(injector: Injector, public stepperService: StepperService<CardModel>) {
+  constructor(injector: Injector, public stepperService: StepperService<LearnModel>) {
     super(injector);
   }
 

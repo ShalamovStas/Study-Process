@@ -38,6 +38,7 @@ import { FirebaseDataProviderService } from './services/firebaseDataProvider.ser
 import { ImportCardSetService } from './services/importCardSetService';
 import { Firestore } from "@angular/fire/firestore";
 import { ImportDialogComponent } from './dialogs/import-dialog/import-dialog.component';
+import { MemoCardCategoryDialogComponent } from './home/dialogs/memo-card-category-dialog/memo-card-category-dialog';
 import { CreateMemoCardDialogComponent } from './home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { DeleteMemoCardDialogComponent } from './home/dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
 import { MemoCardSetComponent } from './memo-card-set/memo-card-set.component';
@@ -81,6 +82,7 @@ const firebaseConfig = {
     HomeComponent,
 
     //home
+    MemoCardCategoryDialogComponent,
     CreateMemoCardDialogComponent,
     DeleteMemoCardDialogComponent,
     MemoCardSetComponent,

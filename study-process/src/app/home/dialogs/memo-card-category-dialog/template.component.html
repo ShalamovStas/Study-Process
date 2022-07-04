@@ -1,0 +1,23 @@
+<div>
+  <h1 mat-dialog-title>{{model.dialogTitle}}</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput required cdkFocusInitial [(ngModel)]="model.category.name" >
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Color</mat-label>
+      <input matInput [(ngModel)]="model.category.color">
+    </mat-form-field>
+    <br>
+    <p *ngIf="isUnique">&nbsp;</p>
+    <p *ngIf="!isUnique">Enter a different name</p>
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="model.category" cdkFocusInitial
+      [disabled]='!model.category.name || !isUnique'>{{model.saveBtnText}}</button>
+  </div>
+</div>

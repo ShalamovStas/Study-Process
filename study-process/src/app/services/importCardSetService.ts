@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { AppHelper } from "../models/AppHelper";
-import { CardModel, CardSet } from "../models/Card";
+import { LearnModel, MemoCard } from "../models/Card";
 
 @Injectable()
 export class ImportCardSetService {
 
     //to keep smth handy - держать что-то под рукой;look after someone - присматривать за кем-то, заботиться;
-    parseCardSet(importModel: CardSetImportModel): CardSet | undefined {
+    parseCardSet(importModel: CardSetImportModel): MemoCard | undefined {
         if (!importModel.isValid)
             return;
 
@@ -16,7 +16,7 @@ export class ImportCardSetService {
             return;
         }
 
-        let cardSet = new CardSet();
+        let cardSet = new MemoCard();
         cardSet.userId = user?.id;
         cardSet.title = importModel.title;
 
@@ -24,7 +24,7 @@ export class ImportCardSetService {
 
         cardItemsParsed.forEach(cardItem => {
 
-            let cardModel = new CardModel();
+            let cardModel = new LearnModel();
 
             let backAndFront = cardItem.split(importModel.cardModelSeparator);
 

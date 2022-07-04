@@ -4,10 +4,9 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Console } from 'console';
 import { idToken } from 'rxfire/auth';
 import { CreateConspectDialogComponent } from '../dialogs/create-conspect-dialog/create-conspect-dialog.component';
-import { CreateMemoCardDialogComponent } from '../home/dialogs/create-memo-card-dialog/create-memo-card-dialog.component';
 import { DeleteMemoCardDialogComponent } from '../home/dialogs/delete-memo-card-dialog/delete-memo-card-dialog.component';
 import { AppHelper } from '../models/AppHelper';
-import { CardSet } from '../models/Card';
+import { MemoCard } from '../models/Card';
 import { Conspect, Tag } from '../models/Conspect';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 

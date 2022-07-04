@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { CreateWordDialogComponent } from '../dialogs/create-word-dialog/create-word-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { AppHelper } from '../models/AppHelper';
-import { CardModel, CardSet } from '../models/Card';
+import { LearnModel, MemoCard } from '../models/Card';
 import { FirebaseDataProviderService } from '../services/firebaseDataProvider.service';
 
 @Component({
@@ -18,7 +18,7 @@ import { FirebaseDataProviderService } from '../services/firebaseDataProvider.se
 })
 export class MemoCardSetComponent implements OnInit {
   subscription: Subscription | undefined;
-  cardSet: CardSet = new CardSet();
+  cardSet: MemoCard = new MemoCard();
   breakpoint: number | undefined;
 
   breakPointWindowWidth = 800;
@@ -76,7 +76,7 @@ export class MemoCardSetComponent implements OnInit {
     this.breakpoint = (event.target.innerWidth <= this.breakPointWindowWidth) ? 1 : 2;
   }
 
-  toggleWord(card: CardModel) {
+  toggleWord(card: LearnModel) {
     card.inUse = !card.inUse;
 
     this.db.updateCardItemsById(this.cardSet).then(() => { });
@@ -84,7 +84,7 @@ export class MemoCardSetComponent implements OnInit {
   }
 
   openDialogCreate(): void {
-    let newCardModel = new CardModel();
+    let newCardModel = new LearnModel();
     newCardModel.id = AppHelper.generateGuid();
 
     const dialogRef = this.dialog.open(CreateWordDialogComponent, {
@@ -105,8 +105,8 @@ export class MemoCardSetComponent implements OnInit {
     });
   }
 
-  openDialogEdit(card: CardModel) {
-    let cardModelToUpdate = (JSON.parse(JSON.stringify(card)) as CardModel);
+  openDialogEdit(card: LearnModel) {
+    let cardModelToUpdate = (JSON.parse(JSON.stringify(card)) as LearnModel);
 
     const dialogRef = this.dialog.open(CreateWordDialogComponent, {
       minWidth: '70vw',
@@ -127,7 +127,7 @@ export class MemoCardSetComponent implements OnInit {
     });
   }
 
-  openDialogDelete(model: CardModel) {
+  openDialogDelete(model: LearnModel) {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       minWidth: '70vw',
       data: {},

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CardSet, Category } from 'src/app/models/Card';
+import { CreateMemoCardDialogModel } from 'src/app/models/Base';
+import { MemoCard } from 'src/app/models/Card';
 
 @Component({
   selector: 'app-create-memo-card-dialog',
@@ -9,11 +10,11 @@ import { CardSet, Category } from 'src/app/models/Card';
 })
 export class CreateMemoCardDialogComponent implements OnInit {
 
-  categories = Category;
+  categories = [];
 
   constructor(
     public dialogRef: MatDialogRef<CreateMemoCardDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public cardModel: CardSet,
+    @Inject(MAT_DIALOG_DATA) public model: CreateMemoCardDialogModel,
   ) { }
 
   ngOnInit(): void {

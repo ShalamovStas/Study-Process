@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Firestore, collectionData, collection, doc, query, where, getDoc, DocumentData, getDocs, setDoc, deleteDoc, updateDoc } from "@angular/fire/firestore";
 import { AppHelper } from "../models/AppHelper";
-import { CardModel, CardSet, Category } from "../models/Card";
+import { LearnModel, MemoCard } from "../models/Card";
 import { Conspect } from "../models/Conspect";
 
 @Injectable()
@@ -29,39 +29,69 @@ export class FirebaseDataProviderService {
         return promise;
     }
 
+    getItemsByUserName(userId: string | undefined, collectionName: string, mapFunc: Function) {
+        const promise = new Promise((resolve, reject) => {
+            if (!userId) {
+                reject();
+            }
 
-    getMemoCardsByUserName(userId: string | undefined): Promise<any> {
-        if (!userId) {
-            let stringUser = localStorage.getItem('user');
-            if (stringUser)
-                userId = JSON.parse(stringUser);
-        }
-
-        let promise = new Promise((resolve, reject) => {
-
-            const usersRef = collection(this.firestore, 'memoCards');
+            const usersRef = collection(this.firestore, collectionName);
             const q = query(usersRef, where("userId", "==", userId));
 
             getDocs(q).then(res => {
-                let result = res.docs.map(x => this.mapMemoCardModel(x.id, x.data()));
-                localStorage.setItem("memoCardSets", JSON.stringify(result));
+                let result = res.docs.map(x => mapFunc(x.id, x.data()));
+                localStorage.setItem(collectionName, JSON.stringify(result));
                 resolve(result);
             });
         });
         return promise;
     }
 
+    // getMemoCardsByUserName(userId: string | undefined): Promise<any> {
+    //     if (!userId) {
+    //         let stringUser = localStorage.getItem('user');
+    //         if (stringUser)
+    //             userId = JSON.parse(stringUser);
+    //     }
+
+    //     let promise = new Promise((resolve, reject) => {
+
+    //         const usersRef = collection(this.firestore, 'memoCards');
+    //         const q = query(usersRef, where("userId", "==", userId));
+
+    //         getDocs(q).then(res => {
+    //             let result = res.docs.map(x => this.mapMemoCardModel(x.id, x.data()));
+    //             localStorage.setItem("memoCards", JSON.stringify(result));
+    //             resolve(result);
+    //         });
+    //     });
+    //     return promise;
+    // }
+
     async deleteMemoCardById(id: string): Promise<void> {
         return await deleteDoc(doc(this.firestore, "memoCards", id));
     }
 
-    createNewSet(model: CardSet): Promise<any> {
+    deleteItemById(id: string, collectionName: string): Promise<void> {
+        return deleteDoc(doc(this.firestore, collectionName, id));
+    }
+
+    createNewMemoCard(model: MemoCard): Promise<any> {
         let objectToSave = JSON.parse(JSON.stringify(model));
         return setDoc(doc(this.firestore, "memoCards", AppHelper.generateGuid()), objectToSave);
     }
 
+    createItem(model: any, collectionName: string): Promise<any> {
+        let objectToSave = JSON.parse(JSON.stringify(model));
+        return setDoc(doc(this.firestore, collectionName, AppHelper.generateGuid()), objectToSave);
+    }
 
-    async updateCardSet(model: CardSet): Promise<void> {
+    updateItem(model: MemoCard, collectionName: string): Promise<void> {
+        let objectToSave = JSON.parse(JSON.stringify(model));
+        return setDoc(doc(this.firestore, collectionName, model.id), objectToSave);
+    }
+
+    async updateMemoCard(model: MemoCard): Promise<void> {
         if (!model || !model.id || !model.title)
             return;
 
@@ -74,7 +104,7 @@ export class FirebaseDataProviderService {
 
     }
 
-    async updateCardItemsById(model: CardSet) {
+    async updateCardItemsById(model: MemoCard) {
         if (!model)
             return;
 
@@ -152,20 +182,20 @@ export class FirebaseDataProviderService {
         };
     }
 
-    private mapMemoCardModel(id: string, data: any): CardSet {
-        if (!data.category)
-            data.category = Category.Heap;
+    // private mapMemoCardModel(id: string, data: any): CardSet {
+    //     if (!data.category)
+    //         data.category = Category.Heap;
 
-        let cardSet = new CardSet();
+    //     let cardSet = new CardSet();
 
-        cardSet.id = id;
-        cardSet.category = data.category;
-        cardSet.items = data.items;
-        cardSet.title = data.title;
-        cardSet.userId = data.userId;
+    //     cardSet.id = id;
+    //     cardSet.category = data.category;
+    //     cardSet.items = data.items;
+    //     cardSet.title = data.title;
+    //     cardSet.userId = data.userId;
 
-        return cardSet;
-    }
+    //     return cardSet;
+    // }
 
     private mapConspectModel(id: string, data: any): Conspect {
         let model = new Conspect();

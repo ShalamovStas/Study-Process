@@ -1,5 +1,7 @@
+@import "../../scss/colors.scss";
+
 .title {
-    color: #3f51b5;
+  color: #3f51b5;
 }
 
 .mat-card {
@@ -9,7 +11,7 @@
   height: 10em;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0 !important;
   }
 
   mat-card-title {
@@ -32,8 +34,8 @@
     margin: 0px;
     border-top: 1px solid #cfcfcf;
 
-    mat-card-subtitle{
-        margin: 5px 10px;
+    mat-card-subtitle {
+      margin: 5px 10px;
     }
   }
 }
@@ -53,7 +55,7 @@
 
 ::ng-deep .mat-tab-header-pagination {
   display: none !important;
-} 
+}
 
 ::ng-deep .mat-tab-label-container {
   display: flex;
@@ -64,6 +66,35 @@
 }
 
 .scrollbar::-webkit-scrollbar {
-  background-color:#fff;
-  width:16px
+  background-color: #fff;
+  width: 16px;
 }
+
+.card-category {
+  .wrap {
+    height: 100%;
+    color: #4e4e4e;
+    text-align: center;
+    overflow: hidden;
+
+    .icon-add-category {
+      height: 50px;
+      width: 50px;
+      font-size: 50px;
+      color: $color-primary;
+    }
+  }
+}
+
+.selected-category-wrap--breadcrums {
+  & > * {
+    line-height: 1;
+  }
+
+  & > *:not(.icon):not(:last-child) {
+    cursor: pointer;
+  }
+}
+
+
+

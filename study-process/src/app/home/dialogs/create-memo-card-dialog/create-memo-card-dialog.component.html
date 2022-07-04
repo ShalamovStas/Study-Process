@@ -1,23 +1,21 @@
 <div>
-  <h1 mat-dialog-title>Create or edit</h1>
+  <h1 mat-dialog-title>{{model.dialogTitle}}</h1>
   <div mat-dialog-content>
     <mat-form-field appearance="fill">
       <mat-label>title</mat-label>
-      <input matInput required cdkFocusInitial [(ngModel)]="cardModel.title">
+      <input matInput required cdkFocusInitial [(ngModel)]="model.deck.title">
     </mat-form-field>
 
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Select category</mat-label>
-      <mat-select [(ngModel)]="cardModel.category">
-        <mat-option [value]="categories.Heap">Heap</mat-option>
-        <mat-option [value]="categories.English">English</mat-option>
-        <mat-option [value]="categories.Programming">Programming</mat-option>
-        <mat-option [value]="categories.Other">Other</mat-option>
+      <mat-select [(ngModel)]="model.deck.categoryId">
+        <mat-option>No category</mat-option>
+        <mat-option *ngFor="let option of model.categories" [value]="option.id">{{option.name}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="cardModel" cdkFocusInitial [disabled]='!cardModel.title'>Ok</button>
+    <button mat-button [mat-dialog-close]="model.deck" cdkFocusInitial [disabled]='!model.deck.title'>{{model.saveBtnText}}</button>
   </div>
 </div>

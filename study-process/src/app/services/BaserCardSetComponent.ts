@@ -1,10 +1,10 @@
 import { Injector } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppHelper } from "../models/AppHelper";
-import { CardSet } from "../models/Card";
+import { MemoCard } from "../models/Card";
 
 export class BaseCardSetComponent {
-  cardSet: CardSet = new CardSet();
+  cardSet: MemoCard = new MemoCard();
   activateRoute: ActivatedRoute;
   router: Router;
 

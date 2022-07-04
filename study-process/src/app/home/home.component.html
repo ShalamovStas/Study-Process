@@ -1,15 +1,91 @@
 <h1 class="title">My MemoCard Sets</h1>
 
-<mat-form-field appearance="standard" >
-    <mat-select [(value)]="selected" (valueChange)='onOptionsSelected(selected)'>
-        <mat-option *ngFor="let item of dropdownValues" [value]="item.id">
-            {{item.viewValue}}
-        </mat-option>
-    </mat-select>
-    <mat-hint>Select the category</mat-hint>
-</mat-form-field>
+<hr>
+<div *ngIf="!selectedCategory" class="row mt-4">
 
-<mat-tab-group mat-stretch-tabs mat-align-tabs="center" animationDuration="0ms" [selectedIndex]="currentTab"
+    <div *ngIf="defaultCategory" class="col-12 col-sm-12 col-md-6 col-lg-4">
+        <mat-card class="card-category" (click)="onCategorySelect(defaultCategory)">
+            <div class="wrap">
+                <h1 class="d-flex align-items-center justify-content-center h-100">{{defaultCategory?.name}}</h1>
+            </div>
+        </mat-card>
+    </div>
+
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let item of memoCardCategories">
+        <mat-card class="card-category" (click)="onCategorySelect(item)" [ngStyle]="{'background-color': item.color}">
+            <div class="mat-menu--wrap">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                    (click)="onEvent($event)">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="openEditCategory(item)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="openDeleteCategoryDialog(item.id)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                </mat-menu>
+            </div>
+            <div class="wrap">
+                <h1 class="d-flex align-items-center justify-content-center h-100">{{item.name}}</h1>
+            </div>
+        </mat-card>
+    </div>
+
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+        <mat-card class="card-category" (click)="onAddNewCategory()">
+            <div class="wrap">
+                <h1 class="d-flex align-items-center justify-content-center h-100">
+                    <mat-icon class="icon-add-category">add</mat-icon>
+                </h1>
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+<div *ngIf="selectedCategory">
+    <div class="row mt-4">
+        <div class="d-flex selected-category-wrap--breadcrums">
+            <h2 class="title" (click)="onBackToCategories()">Categories</h2>
+            <h2 class="icon">
+                <mat-icon color="primary">chevron_right</mat-icon>
+            </h2>
+            <h2 class="title">{{selectedCategory?.name}}</h2>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let card of selectedCards">
+            <mat-card (click)="openDeck(card)">
+                <div class="mat-menu--wrap">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+                        (click)="onEvent($event)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openEditDialog(card)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
+                        </button>
+                        <button mat-menu-item (click)="openDeleteConfirmDialog(card.id)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div>
+                    <mat-card-title>{{card.title}}</mat-card-title>
+                    <mat-card-footer>
+                        <mat-card-subtitle>{{card?.items?.length}} cards</mat-card-subtitle>
+                    </mat-card-footer>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+<!-- <mat-tab-group mat-stretch-tabs mat-align-tabs="center" animationDuration="0ms" [selectedIndex]="currentTab"
     (selectedTabChange)="onTabChange($event)">
     <mat-tab label="Heap">
 
@@ -147,7 +223,7 @@
         </div>
 
     </mat-tab>
-</mat-tab-group>
+</mat-tab-group> -->
 
 <div class="flow-btn-bottom-right--wrap">
     <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="openDialog()">
